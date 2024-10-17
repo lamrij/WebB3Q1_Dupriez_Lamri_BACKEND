@@ -1,1 +1,1 @@
-test jenkins pour reception infos mail
+test jenkins pour reception infos mail 2
