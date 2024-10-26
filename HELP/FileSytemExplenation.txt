@@ -1,16 +1,17 @@
 src/
-├── config/               # Configurations de l'app (DB, services externes, etc.)
-│   └── database.ts       # Configuration de la connexion à la base de données
-├── controllers/          # Logique des contrôleurs (gestion des requêtes HTTP)
-│   └── UserController.ts
-├── models/               # Modèles de données et schémas
-│   └── User.ts
-├── repositories/         # Classes pour accéder aux données (DAO ou Repository Pattern)
-│   └── UserRepository.ts
-├── routes/               # Définitions des routes
-│   └── userRoutes.ts
-├── services/             # Logique métier (services spécifiques à chaque fonctionnalité)
-│   └── UserService.ts
-├── utils/                # Fonctions utilitaires
-│   └── HttpException.ts  # Classe pour gérer les erreurs personnalisées
-└── server.ts              # Starter du server
+├── config/               # Application configurations
+│   ├── dbConfigs.ts      # Database connection and setup
+│   └── tmdbConfig.ts     # Configuration for accessing the TMDB API (tokens, endpoints, etc.)
+├── controllers/          # HTTP request handlers (controllers)
+│   └── UserController.ts # Example controller handling user-related requests
+├── models/               # Data models and schemas
+│   └── User.ts           # Example data model for User entity
+├── repositories/         # Data access layer (repositories following DAO pattern)
+│   └── UserRepository.ts # Repository for managing User entity interactions with the database
+├── routes/               # API route definitions, one route file per Express route
+│   └── userRoutes.ts     # Route file handling user-related endpoints
+├── services/             # Business logic and service layer
+│   └── UserService.ts    # Example service that contains user-related business logic
+├── utils/                # Utility functions and classes
+│   └── HttpException.ts  # Utility class for handling HTTP errors across the application
+└── server.ts             # Server entry point, starts and configures the Express application

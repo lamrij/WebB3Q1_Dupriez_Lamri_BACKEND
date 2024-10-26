@@ -4,7 +4,7 @@ const testPath = express.Router();
 
 testPath.get('/test', (req: Request, res: Response) => {
     // Your code here
-    res.send('Test path for your API');
+    res.send('Api is working...');
 });
 
 export default testPath;
