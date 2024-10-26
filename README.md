@@ -63,7 +63,6 @@ Cela démarrera le serveur en mode de production. Assurez-vous que toutes les co
 Chaque endpoint de l’API est documenté pour permettre une intégration fluide avec les interfaces front-end. Pour consulter la liste complète des endpoints disponibles, référez-vous à la documentation interne ou au fichier `/docs/api.md` (si documenté).
 
 
-
 # Project Overview
 
 This project is a backend application using TypeScript and Express, designed with a modular architecture to ensure scalability, maintainability, and separation of concerns. Each directory in the `src` folder has a specific responsibility, explained below.
@@ -94,63 +93,63 @@ src/
 
 ## Directory and File Explanations
 
-### 1. `config/`
+### 1. `config/` ⚙️
 
 - **Purpose**: Contains configuration files that define settings for external services and database connections.
 - **Files**:
   - `dbConfigs.ts`: Manages the configuration for database connectivity and setup (e.g., database URL, credentials).
   - `tmdbConfig.ts`: Holds configurations for the TMDB API, including API tokens, base URL, and any necessary parameters.
 
-### 2. `controllers/`
+### 2. `controllers/` 🎛️
 
 - **Purpose**: Handles HTTP requests, processes data, and calls appropriate services.
 - **File Structure**:
   - Each controller is specific to a particular resource (e.g., `UserController.ts`), which receives requests, interacts with the relevant service, and returns responses.
 
-### 3. `models/`
+### 3. `models/` 🗃️
 
 - **Purpose**: Defines data models and schemas, which represent the structure of the data managed in the database.
 - **Example**: 
   - `User.ts` could represent a user entity schema with properties such as `id`, `name`, `email`, etc.
   - Any other entities (e.g., `Series`) would also have their respective models defined here.
 
-### 4. `repositories/`
+### 4. `repositories/` 🛠️
 
 - **Purpose**: Acts as a data access layer, responsible for interacting with the database to perform CRUD operations. This follows the Repository Pattern, isolating data logic from business logic.
 - **Files**:
   - `UserRepository.ts`: Contains methods for retrieving, adding, updating, or deleting `User` data in the database.
   - Other repositories would be added here for additional entities as needed.
 
-### 5. `routes/`
+### 5. `routes/` 🛣️
 
 - **Purpose**: Organizes API routes and links each route to the corresponding controller function. Each route file focuses on one endpoint or resource, ensuring modularity.
 - **Files**:
   - `userRoutes.ts`: Defines routes related to `User` actions (e.g., `/users`, `/users/:id`), linked to appropriate controller methods.
   - Additional files would follow the same pattern for each new route.
 
-### 6. `services/`
+### 6. `services/` 🛎️
 
 - **Purpose**: Contains business logic and handles core functionalities of the application. Services use repositories to fetch or manipulate data and apply any additional logic needed for each feature.
 - **Example**:
   - `UserService.ts`: Contains user-related functionality, such as creating a new user, updating user details, etc., with methods that call `UserRepository` functions.
   - Additional service files are created as needed for other features or entities.
 
-### 7. `utils/`
+### 7. `utils/` 🧰
 
 - **Purpose**: Stores utility functions and classes that are not directly associated with any specific layer (e.g., helper functions, error-handling classes).
 - **File Structure**:
   - `HttpException.ts`: Custom error-handling class to manage HTTP exceptions consistently across the application.
   - If a utility class is specific to a certain function and has a parent class, consider creating a package for it within this folder.
 
-### 8. `server.ts`
+### 8. `server.ts` 🔌
 
 - **Purpose**: The main entry point for the server. Initializes the Express application, loads routes, and listens on the designated port.
 - **Responsibilities**:
   - Imports configurations, initializes middleware, registers routes, and sets up the Express server.
 
----
+--- 
 
-### Notes
+### Notes ✍️
 
 - **Modularity**: Each layer is separated to enhance code readability, maintainability, and scalability.
 - **Error Handling**: Custom error classes in `utils/` provide consistent error management throughout the application.
