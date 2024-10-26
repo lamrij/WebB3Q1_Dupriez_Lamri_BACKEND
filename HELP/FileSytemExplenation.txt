@@ -1,0 +1,16 @@
+src/
+├── config/               # Configurations de l'app (DB, services externes, etc.)
+│   └── database.ts       # Configuration de la connexion à la base de données
+├── controllers/          # Logique des contrôleurs (gestion des requêtes HTTP)
+│   └── UserController.ts
+├── models/               # Modèles de données et schémas
+│   └── User.ts
+├── repositories/         # Classes pour accéder aux données (DAO ou Repository Pattern)
+│   └── UserRepository.ts
+├── routes/               # Définitions des routes
+│   └── userRoutes.ts
+├── services/             # Logique métier (services spécifiques à chaque fonctionnalité)
+│   └── UserService.ts
+├── utils/                # Fonctions utilitaires
+│   └── HttpException.ts  # Classe pour gérer les erreurs personnalisées
+└── server.ts              # Starter du server
