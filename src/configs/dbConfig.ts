@@ -1,19 +1,9 @@
 import { DataSource } from 'typeorm';
-import "reflect-metadata";
+import { User } from '../models/userModel'; // Chemin vers votre entité User
 
 export const AppDataSource = new DataSource({
-  type: 'sqlite',          // Exemple avec SQLite ; adapte selon tes besoins
-  database: './db.sqlite',
-  synchronize: true,       // Déconseillé en production
-  entities: [__dirname + '/../models/*.ts'],
+    type: 'sqlite',
+    database: 'database.sqlite', // Nom du fichier de votre base de données
+    synchronize: true, // Synchronise le schéma de la base de données avec les entités
+    entities: [User], // Liste des entités
 });
-
-export const connectDB = async () => {
-  try {
-    await AppDataSource.initialize();
-    console.log('Database connected');
-  } catch (error) {
-    console.error('Database connection failed:', error);
-    process.exit(1);
-  }
-};

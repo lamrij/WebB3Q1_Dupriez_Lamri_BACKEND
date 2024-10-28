@@ -9,7 +9,8 @@ src/
 ├── repositories/         # Data access layer (repositories following DAO pattern)
 │   └── UserRepository.ts # Repository for managing User entity interactions with the database
 ├── routes/               # API route definitions, one route file per Express route
-│   └── userRoutes.ts     # Route file handling user-related endpoints
+│   └── endPoints/               # API route definitions, one route file per Express route
+│       └── userRoutes.ts     # Route file handling user-related endpoints
 ├── services/             # Business logic and service layer
 │   └── UserService.ts    # Example service that contains user-related business logic
 ├── utils/                # Utility functions and classes
