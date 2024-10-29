@@ -7,13 +7,14 @@ import testPath from './endPoints/testPath';
 import loginPath from './endPoints/loginPath';
 import moviesPath from './endPoints/moviesPath';
 import seriesPath from './endPoints/seriesPath';
-
+import registerPath from './endPoints/registerPath';
 //setting up the router
 const router = express.Router();
 
 //asingning the paths to the router
 router.use(testPath);
 router.use(loginPath);
+router.use(registerPath);
 router.use(moviesPath);
 router.use(seriesPath);
 

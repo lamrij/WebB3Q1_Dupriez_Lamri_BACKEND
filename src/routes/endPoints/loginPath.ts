@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 
-const LoginPath = express.Router();
+const loginPath = express.Router();
 
-LoginPath.get('/login', (req: Request, res: Response) => {
+loginPath.get('/login', (req: Request, res: Response) => {
     // Your code here
     res.send('Login is working...');
 });
 
-export default LoginPath;
+export default loginPath;

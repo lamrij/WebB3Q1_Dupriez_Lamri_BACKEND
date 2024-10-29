@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testeur d'API</title>
+    <link rel="stylesheet" href="index.css"> <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css"> <!-- Lien vers Prism.js -->
+</head>
+<body>
+
+<div class="container">
+    <h1>Api testeur</h1>
+    <form id="apiTesterForm">
+        <label for="urlInput">URL du serveur :</label>
+        <input type="text" id="urlInput" value="http://localhost:3000">
+
+        <label for="endpointInput">Endpoint :</label>
+        <input type="text" id="endpointInput" value="test">
+        <textarea id="bodyInput" placeholder="Entrez le corps de la requête ici (JSON format)"></textarea>
+        <select id="methodSelect">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <!-- Ajoutez d'autres méthodes si nécessaire -->
+        </select>
+        <div class="left">
+            
+            <button type="submit">Tester</button>
+        </div>
+    </form>
+
+    <strong class="left">URL de la requête :</strong>
+    <div class="request-url">
+         <span id="requestUrl">Pas encore de requête</span>
+    </div>
+    <strong>Réponse de l'API :</strong>
+
+    <div class="api-response">
+        <pre id="apiResponse" class="language-json">Pas encore de requête</pre> <!-- Utilisation de <pre> pour préserver le formatage -->
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script> <!-- Lien vers Prism.js -->
+<script src="index.js"></script> <!-- Lien vers le fichier JS -->
+</body>
+</html>

@@ -1,0 +1,9 @@
+register : 
+{
+    "firstname": "Mathis",
+    "lastname": "Dupont",
+    "username": "mathisdupont",
+    "password": "securePassword123",
+    "email": "mathis.dupont@example.com",
+    "birthdate": "2003-05-15"
+}
