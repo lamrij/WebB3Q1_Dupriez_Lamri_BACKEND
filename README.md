@@ -1,71 +1,70 @@
-# 🎬 Choix de Film - API Backend
+# 🎬 Movie Choice - API Backend
 
-**Projet scolaire - BAC3Q1 HELHA - Fin 2024**
+**School Project - BAC3Q1 HELHA - End of 2024**
 
-Ce dépôt contient le backend d’un projet scolaire visant à simplifier le choix d'un film à regarder, en utilisant l'API *The Movie Database* (TMDB) pour proposer une large gamme de films et recommandations aux utilisateurs.
+This repository contains the backend for a school project that aims to simplify choosing a movie to watch, using *The Movie Database* (TMDB) API to provide users with a wide range of movies and recommendations.
 
-## 🚀 Technologies Utilisées
+## 🚀 Technologies Used
 
-- **Node.js** avec **Express** pour la gestion du serveur et des routes.
-- **TypeScript** pour un typage robuste et des fonctionnalités modernes de JavaScript.
-- **TypeORM** pour l'interaction avec la base de données.
-- **TMDB API** pour la récupération des informations de films en temps réel.
+- **Node.js** with **Express** for server and route management.
+- **TypeScript** for robust typing and modern JavaScript features.
+- **TypeORM** for database interactions.
+- **TMDB API** for real-time movie information retrieval.
 
 ## 📂 Configuration
 
-Avant de lancer le projet, assurez-vous de configurer correctement l'API TMDB et la base de données :
+Before launching the project, ensure that the TMDB API and database are correctly configured:
 
-1. **TMDB** : Ajoutez votre clé d’API TMDB dans le fichier de configuration `/src/configs/tmdbConfig.ts`.
-2. **Base de données** : Configurez les paramètres de connexion de la base de données dans `/src/configs/dbConfig.ts`.
+1. **TMDB**: Add your TMDB API key in the configuration file `/src/configs/tmdbConfig.ts`.
+2. **Database**: Configure database connection settings in `/src/configs/dbConfig.ts`.
 
-Pour les environnements de développement et de production, voici les paquets nécessaires :
+For both development and production environments, the following packages are required:
 
-- **TypeORM** : installation avec 
+- **TypeORM**: Install with 
   ```bash
   npm install typeorm --save
   ```
-  et l'importation de 
+  and import with
   ```typescript
   import "reflect-metadata";
   ```
-- **Types Node** (pour TypeScript) : 
+- **Node Types** (for TypeScript):
   ```bash
   npm install @types/node --save-dev
   ```
-- **Base de données** :
-   - **MariaDB** pour la production :
+- **Database**:
+   - **MariaDB** for production:
      ```bash
      npm install mysql --save
      ```
-   - **SQLite3** pour le développement :
+   - **SQLite3** for development:
      ```bash
      npm install sqlite3 --save
      ```
 
 ## ⚙️ Installation
 
-Pour démarrer le projet, suivez les étapes ci-dessous :
+To start the project, follow the steps below:
 
-1. **Installer les dépendances :**
+1. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Lancer le serveur :**
+2. **Start the server:**
    ```bash
    npm start
    ```
 
-Cela démarrera le serveur en mode de production. Assurez-vous que toutes les configurations (TMDB, base de données) sont correctement définies avant de démarrer pour éviter les erreurs de connexion.
+This will start the server in production mode. Make sure that all configurations (TMDB, database) are properly set up before starting to avoid connection errors.
 
-## 📜 Documentation des Endpoints
+## 📜 API Endpoints Documentation
 
-Chaque endpoint de l’API est documenté pour permettre une intégration fluide avec les interfaces front-end. Pour consulter la liste complète des endpoints disponibles, référez-vous à la documentation interne ou au fichier `/docs/api.md` (si documenté).
-
+Each API endpoint is documented to allow seamless integration with front-end interfaces. For a complete list of available endpoints, refer to the internal documentation or the file `/docs/api.md` (if documented).
 
 # Project Overview
 
-This project is a backend application using TypeScript and Express, designed with a modular architecture to ensure scalability, maintainability, and separation of concerns. Each directory in the `src` folder has a specific responsibility, explained below.
+This backend application uses TypeScript and Express and is designed with a modular architecture to ensure scalability, maintainability, and separation of concerns. Each directory in the `src` folder has a specific responsibility, as explained below.
 
 ## Folder Structure
 
@@ -95,62 +94,62 @@ src/
 
 ### 1. `config/` ⚙️
 
-- **Purpose**: Contains configuration files that define settings for external services and database connections.
+- **Purpose**: Contains configuration files defining settings for external services and database connections.
 - **Files**:
-  - `dbConfigs.ts`: Manages the configuration for database connectivity and setup (e.g., database URL, credentials).
-  - `tmdbConfig.ts`: Holds configurations for the TMDB API, including API tokens, base URL, and any necessary parameters.
+  - `dbConfigs.ts`: Manages configuration for database connectivity and setup (e.g., database URL, credentials).
+  - `tmdbConfig.ts`: Holds configurations for the TMDB API, including API tokens, base URL, and necessary parameters.
 
 ### 2. `controllers/` 🎛️
 
 - **Purpose**: Handles HTTP requests, processes data, and calls appropriate services.
 - **File Structure**:
-  - Each controller is specific to a particular resource (e.g., `UserController.ts`), which receives requests, interacts with the relevant service, and returns responses.
+  - Each controller focuses on a specific resource (e.g., `UserController.ts`), handling requests, interacting with relevant services, and returning responses.
 
 ### 3. `models/` 🗃️
 
-- **Purpose**: Defines data models and schemas, which represent the structure of the data managed in the database.
-- **Example**: 
+- **Purpose**: Defines data models and schemas that represent the structure of the data managed in the database.
+- **Example**:
   - `User.ts` could represent a user entity schema with properties such as `id`, `name`, `email`, etc.
-  - Any other entities (e.g., `Series`) would also have their respective models defined here.
+  - Additional entities (e.g., `Series`) would have their respective models here.
 
 ### 4. `repositories/` 🛠️
 
-- **Purpose**: Acts as a data access layer, responsible for interacting with the database to perform CRUD operations. This follows the Repository Pattern, isolating data logic from business logic.
+- **Purpose**: Acts as a data access layer responsible for interacting with the database to perform CRUD operations, following the Repository Pattern, which separates data logic from business logic.
 - **Files**:
   - `UserRepository.ts`: Contains methods for retrieving, adding, updating, or deleting `User` data in the database.
-  - Other repositories would be added here for additional entities as needed.
+  - Other repositories for additional entities as needed.
 
 ### 5. `routes/` 🛣️
 
-- **Purpose**: Organizes API routes and links each route to the corresponding controller function. Each route file focuses on one endpoint or resource, ensuring modularity.
+- **Purpose**: Organizes API routes and links each route to the corresponding controller function. Each route file focuses on one endpoint or resource for modularity.
 - **Files**:
   - `userRoutes.ts`: Defines routes related to `User` actions (e.g., `/users`, `/users/:id`), linked to appropriate controller methods.
   - Additional files would follow the same pattern for each new route.
 
 ### 6. `services/` 🛎️
 
-- **Purpose**: Contains business logic and handles core functionalities of the application. Services use repositories to fetch or manipulate data and apply any additional logic needed for each feature.
+- **Purpose**: Contains business logic and core application functionalities. Services use repositories to fetch or manipulate data and apply additional logic as needed.
 - **Example**:
-  - `UserService.ts`: Contains user-related functionality, such as creating a new user, updating user details, etc., with methods that call `UserRepository` functions.
+  - `UserService.ts`: Contains user-related functionality, such as creating a new user, updating user details, with methods that call `UserRepository` functions.
   - Additional service files are created as needed for other features or entities.
 
 ### 7. `utils/` 🧰
 
-- **Purpose**: Stores utility functions and classes that are not directly associated with any specific layer (e.g., helper functions, error-handling classes).
+- **Purpose**: Stores utility functions and classes not directly associated with any specific layer (e.g., helper functions, error-handling classes).
 - **File Structure**:
-  - `HttpException.ts`: Custom error-handling class to manage HTTP exceptions consistently across the application.
-  - If a utility class is specific to a certain function and has a parent class, consider creating a package for it within this folder.
+  - `HttpException.ts`: Custom error-handling class for consistent HTTP error management across the application.
+  - If a utility class is specific to a certain function, consider creating a package for it within this folder.
 
 ### 8. `server.ts` 🔌
 
-- **Purpose**: The main entry point for the server. Initializes the Express application, loads routes, and listens on the designated port.
+- **Purpose**: Main entry point for the server. Initializes the Express application, loads routes, and listens on the designated port.
 - **Responsibilities**:
   - Imports configurations, initializes middleware, registers routes, and sets up the Express server.
 
---- 
+---
 
 ### Notes ✍️
 
 - **Modularity**: Each layer is separated to enhance code readability, maintainability, and scalability.
 - **Error Handling**: Custom error classes in `utils/` provide consistent error management throughout the application.
-- **Extensibility**: Additional features or resources can be easily added by creating new files within the `controllers`, `services`, `repositories`, and `routes` directories.
+- **Extensibility**: Additional features or resources can be added by creating new files within the `controllers`, `services`, `repositories`, and `routes` directories.
