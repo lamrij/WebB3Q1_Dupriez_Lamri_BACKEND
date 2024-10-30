@@ -1,47 +1,45 @@
-import { Request, Response } from 'express';
 import { UserRepository } from '../repositories/userRepository';
 import { User } from '../models/userModel';
-import Hasher from '../services/hasher';
-
-const userRepository = new UserRepository();
 
 export class UserController {
     // Create a new user
-    static async createUser(req: Request, res: Response) {
+    static async createUser(userData: User): Promise<User | null> {
         try {
-            var userToAdd : User = req.body;
-            var hashedPassword:string  = await Hasher.hash(userToAdd.password);
-            userToAdd = new User(userToAdd.firstname, userToAdd.lastname, userToAdd.username,hashedPassword, userToAdd.email, userToAdd.birthdate);
-            const user = await userRepository.createUser(userToAdd);
-            res.status(201).json(user);
+            const user = await UserRepository.createUser(userData);
+            return user; // Return the user object
         } catch (error) {
-            res.status(500).json({ error: 'Error creating user' });
+            console.error('Error creating user:', error);
+            return null; 
         }
     }
-    // find a user by id
-    static async findUserById(req: Request, res: Response) {
+
+    // Find a user by id
+    static async findUserById(id: number): Promise<User | null> {
         try {
-            const user = await userRepository.findUserById(Number(req.params.id));
-            if (user) {
-                res.status(200).json(user);
-            } else {
-                res.status(404).json({ error: 'User not found' });
-            }
+            return await UserRepository.findUserById(id);
         } catch (error) {
-            res.status(500).json({ error: 'Error finding user' });
+            console.error('Error finding user by ID:', error);
+            return null; 
         }
     }
-    // find a user by username
-    static async findUserByUsername(req: Request, res: Response) {
+
+    // Find a user by username
+    static async findUserByUsername(username: string): Promise<User | null> {
         try {
-            const user = await userRepository.findUserByUsername(req.params.username);
-            if (user) {
-                res.status(200).json(user);
-            } else {
-                res.status(404).json({ error: 'User not found' });
-            }
+            return await UserRepository.findUserByUsername(username);
         } catch (error) {
-            res.status(500).json({ error: 'Error finding user' });
+            console.error('Error finding user by username:', error);
+            return null; 
+        }
+    }
+
+    // Find a user by email
+    static async findUserByEmail(email: string): Promise<User | null> {
+        try {
+            return await UserRepository.findUserByEmail(email);
+        } catch (error) {
+            console.error('Error finding user by email:', error);
+            return null; 
         }
     }
 }

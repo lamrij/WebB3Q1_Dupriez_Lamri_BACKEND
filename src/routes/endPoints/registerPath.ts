@@ -1,11 +1,12 @@
-import express, { Request, Response } from 'express';
-import { UserController } from '../../controllers/userController';
+import express from 'express';
+import { RegisterService } from '../../services/registerServices';
 
 const registerPath = express.Router();
 
-registerPath.post('/register', (req: Request, res: Response) => {
-    // Your code here
-    UserController.createUser(req, res);
+// Route to register a new user with a POST request
+registerPath.post('/register', (req, res) => {
+    // Call the register service with req and res
+    RegisterService.register(req, res);
 });
 
 export default registerPath;

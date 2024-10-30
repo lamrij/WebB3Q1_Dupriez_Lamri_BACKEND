@@ -1,22 +1,26 @@
 
-//importation of dependencies
+// importation of dependencies
 import express, { Request, Response } from 'express';
 
-//importation of all paths
+// importation of all paths
+
+// paths reliated to the user and management 
 import testPath from './endPoints/testPath';
 import loginPath from './endPoints/loginPath';
-import moviesPath from './endPoints/moviesPath';
-import seriesPath from './endPoints/seriesPath';
 import registerPath from './endPoints/registerPath';
-//setting up the router
+
+// movie routes
+import moviesPath from './endPoints/moviesPath';
+
+// setting up the router
 const router = express.Router();
 
-//asingning the paths to the router
+// asingning the paths to the router
 router.use(testPath);
 router.use(loginPath);
 router.use(registerPath);
 router.use(moviesPath);
-router.use(seriesPath);
+
 
 
 export default router;

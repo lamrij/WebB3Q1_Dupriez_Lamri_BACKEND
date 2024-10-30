@@ -1,25 +1,30 @@
-import { AppDataSource } from '../configs/dbConfig'; // Corrigez le chemin si nécessaire
-import { User } from '../models/userModel'; // Assurez-vous que le modèle User est correctement importé
+import { AppDataSource } from '../configs/dbConfig';
+import { User } from '../models/userModel';
 
 export class UserRepository {
-    private userRepository = AppDataSource.getRepository(User);
-
     // Method to create a new user
-    async createUser(user: User): Promise<User> {
-        return await this.userRepository.save(user); // Enregistre l'utilisateur dans la base de données
+    static async createUser(user: User): Promise<User> {
+        return await AppDataSource.getRepository(User).save(user);
     }
 
     // Method to find a user by id
-    async findUserById(id: number): Promise<User | null> {
-        return this.userRepository.findOne({
+    static async findUserById(id: number): Promise<User | null> {
+        return AppDataSource.getRepository(User).findOne({
             where: { id }
         });
     }
 
     // Method to find a user by username
-    async findUserByUsername(username: string): Promise<User | null> {
-        return this.userRepository.findOne({
+    static async findUserByUsername(username: string): Promise<User | null> {
+        return AppDataSource.getRepository(User).findOne({
             where: { username }
+        });
+    }
+
+    // Method to find a user by email
+    static async findUserByEmail(email: string): Promise<User | null> {
+        return AppDataSource.getRepository(User).findOne({
+            where: { email }
         });
     }
 }

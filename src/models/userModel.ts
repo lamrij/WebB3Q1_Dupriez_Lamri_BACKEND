@@ -1,5 +1,7 @@
 import 'reflect-metadata';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Token } from './tokenModel';
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -22,6 +24,10 @@ export class User {
 
     @Column()
     birthdate: Date;
+
+    @OneToMany(() => Token, (token) => token.user)
+    tokens!: Token[];
+    
 
     constructor(
         firstname: string,
