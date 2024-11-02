@@ -12,6 +12,7 @@ export const AppDataSource = new DataSource({
             database: 'database.sqlite', // SQLite database file for development
         }
         : {
+            // NOT ALREADY TESTED /!\ DO NOT USE IN PRODUCTION NOW
             host: Config.typeormConfig.host, // MariaDB configuration for production
             port: Config.typeormConfig.port,
             username: Config.typeormConfig.username,
