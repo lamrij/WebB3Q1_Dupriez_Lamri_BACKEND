@@ -13,7 +13,7 @@ This documentation describes the various endpoints available in the API, along w
 
     ```json
     {
-      "username": "user",
+      "email": "example@example.org",
       "password": "password"
     }
     ```
