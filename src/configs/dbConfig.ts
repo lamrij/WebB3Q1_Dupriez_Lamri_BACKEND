@@ -1,11 +1,24 @@
 import { DataSource } from 'typeorm';
-import { User } from '../models/userModel'; // Chemin vers votre entité User
-import { Movie } from '../models/movieModel'; // Chemin vers votre entité Movie
-import { Token } from '../models/tokenModel'; // Chemin vers votre entité Token
+import { User } from '../models/userModel';
+import { Movie } from '../models/movieModel';
+import { Token } from '../models/tokenModel';
+import Config from './config'; // Import the Config class
 
+// Database source configuration based on environment
 export const AppDataSource = new DataSource({
-    type: 'sqlite',
-    database: 'database.sqlite', // Nom du fichier de votre base de données
-    synchronize: true, // Synchronise le schéma de la base de données avec les entités
-    entities: [User,Movie,Token], // Liste des entités
+    type: Config.typeormConnection as 'sqlite' | 'mariadb', // Specify the type of connection
+    ...(Config.typeormConnection === 'sqlite'
+        ? {
+            database: 'database.sqlite', // SQLite database file for development
+        }
+        : {
+            host: Config.typeormConfig.host, // MariaDB configuration for production
+            port: Config.typeormConfig.port,
+            username: Config.typeormConfig.username,
+            password: Config.typeormConfig.password,
+            database: Config.typeormConfig.database,
+        }
+    ),
+    synchronize: !Config.isProd(), // Synchronize schema in non-production environments
+    entities: [User, Movie, Token], // List of entities
 });

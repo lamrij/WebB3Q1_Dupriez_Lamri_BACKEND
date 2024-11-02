@@ -4,10 +4,11 @@ import { TokenController } from '../controllers/tokenController';
 import Hasher from '../utils/hasher';
 import { User } from '../models/userModel';
 import jwt from 'jsonwebtoken';
+import config from '../configs/config';
 
 export class LoginService {
     // secret key to sign the JWT token
-    private static secretKey: string = 'votre_clé_secrète'; // REPLACE WITH A VERY LONG RANDOM STRING
+    private static secretKey: string = config.jwtSecret ; // REPLACE WITH A VERY LONG RANDOM STRING
 
     // method to authenticate a user
     static async authenticate(req: Request, res: Response): Promise<void> {
