@@ -16,9 +16,9 @@ export class Token {
     @CreateDateColumn()
     createdAt!: Date;
 
-    @Column('datetime', { nullable: false }) // Supprimez la valeur par défaut ici
+    @Column('datetime', { nullable: false }) 
     expiresAt!: Date;
 
-    @Column('text') // Utilise 'text' pour le type
+    @Column('text') 
     status!: 'valid' | 'revoked';
 }

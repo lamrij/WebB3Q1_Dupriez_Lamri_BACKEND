@@ -60,4 +60,14 @@ export class TokenController {
             return false;
         }
     }
+
+    // Find all tokens
+    static async findAllTokens(): Promise<Token[]> {
+        try {
+            return await TokenRepository.findAllTokens();
+        } catch (error) {
+            console.error('Erreur lors de la récupération de tous les tokens:', error);
+            return [];
+        }
+    }
 }

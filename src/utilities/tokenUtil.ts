@@ -1,84 +1,94 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { Token } from '../models/tokenModel';
-import { TokenRepository } from '../repositories/tokenRepository';
+import { TokenController } from '../controllers/tokenController';
 import config from '../configs/config';
 import { User } from '../models/userModel';
+import { Token } from '../models/tokenModel';
 
 export class TokenUtil {
-    // Clé secrète pour signer le token JWT
+    // Secret key for signing the JWT token
     private static secretKey: string = config.jwtSecret;
 
-    // Méthode pour générer un token JWT
+    // Method to generate a JWT token
     static generateToken(payload: object, expiresIn: string = '3h'): string {
-        return jwt.sign(payload, this.secretKey, { expiresIn });
+        try {
+            return jwt.sign(payload, this.secretKey, { expiresIn });
+        } catch (error) {
+            console.error('Error generating token:', error);
+            throw new Error('Failed to generate token');
+        }
     }
 
-    // Méthode pour vérifier un token JWT
+    // Method to verify a JWT token
     static verifyToken(token: string): any {
         try {
             return jwt.verify(token, this.secretKey);
         } catch (error) {
-            console.error('Échec de la vérification du token:', error);
-            throw new Error('Token invalide ou expiré');
+            if (error instanceof jwt.JsonWebTokenError) {
+                console.error('JWT Error:', error.message);
+            } else if (error instanceof jwt.TokenExpiredError) {
+                console.error('Token expired:', error.message);
+            } else if (error instanceof jwt.NotBeforeError) {
+                console.error('Token not active yet:', error.message);
+            } else {
+                console.error('Unknown error during token verification:', error);
+            }
+            throw new Error('Invalid or expired token');
         }
     }
 
-    // Middleware pour authentifier un token
+    // Middleware to authenticate a token
     static async authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
         const authHeader = req.headers['authorization'];
-        const tokenString = authHeader && authHeader.split(' ')[1]; // Format attendu : "Bearer <token>"
+        const tokenString = authHeader && authHeader.split(' ')[1]; // Expected format: "Bearer <token>"
 
         if (!tokenString) {
-            res.status(401).json({ success: false, error: 'Le token d\'accès est manquant ou invalide' });
+            console.log('No token found in the request header');
+            res.status(401).json({ success: false, error: 'Access token is missing or invalid' });
             return;
         }
 
         try {
-            // Appel de la méthode verifyToken en utilisant TokenUtil
+            // Call the verifyToken method using TokenUtil
             const decoded = TokenUtil.verifyToken(tokenString);
 
-            // Récupération du token dans la base de données
-            const tokenRecord = await TokenRepository.findTokenByTokenString(tokenString);
-
-            if (!tokenRecord) {
-                res.status(401).json({ success: false, error: 'Token introuvable ou révoqué' });
+            // Retrieve the token from the database through the controller
+            const tokenRecord = await TokenController.findTokenById(decoded.id);
+            if (!tokenRecord || tokenRecord.token !== tokenString) {
+                console.log('Token not found or mismatched in the database');
+                res.status(401).json({ success: false, error: 'Token not found or revoked' });
                 return;
             }
 
-            // Vérification du statut du token
+            // Check the token status
             if (tokenRecord.status !== 'valid') {
-                res.status(401).json({ success: false, error: 'Le token a été révoqué' });
+                console.log('Token has been revoked');
+                res.status(401).json({ success: false, error: 'Token has been revoked' });
                 return;
             }
 
-            // Vérification de l'expiration du token
+            // Check if the token has expired
             if (tokenRecord.expiresAt < new Date()) {
-                res.status(401).json({ success: false, error: 'Le token a expiré' });
+                console.log('Token has expired');
+                res.status(401).json({ success: false, error: 'Token has expired' });
                 return;
             }
 
-            // Attacher les données du token décodé à la requête
+            // Attach the decoded token data to the request
             (req as any).user = decoded;
 
-            // Passer au middleware suivant
+            // Proceed to the next middleware
             next();
         } catch (error) {
-            console.error('Échec de l\'authentification du token:', error);
-            res.status(403).json({ success: false, error: 'Token invalide' });
+            console.error('Token authentication failed:', error);
+            res.status(403).json({ success: false, error: 'Invalid or expired token' });
         }
     }
 
     // Method to save a token in the database
     static async saveToken(token: string, user: User, expiresInHours: number = 3): Promise<Token | null> {
-        const tokenEntity = new Token();
-        tokenEntity.token = token;
-        tokenEntity.user = user;
-        tokenEntity.expiresAt = new Date(Date.now() + expiresInHours * 60 * 60 * 1000); // Définissez l'expiration ici
-        tokenEntity.status = 'valid';
-
         try {
-            return await TokenRepository.createToken(tokenEntity);
+            return await TokenController.createTokenForUser(token, user, expiresInHours);
         } catch (error) {
             console.error('Error saving token:', error);
             return null;
@@ -87,30 +97,85 @@ export class TokenUtil {
 
     // Method to find a token by its ID
     static async findTokenById(id: number): Promise<Token | null> {
-        return await TokenRepository.findTokenById(id);
+        try {
+            return await TokenController.findTokenById(id);
+        } catch (error) {
+            console.error('Error finding token by ID:', error);
+            return null;
+        }
     }
 
     // Method to find all tokens associated with a user
     static async findTokensByUser(user: User): Promise<Token[]> {
-        return await TokenRepository.findTokensByUser(user);
+        try {
+            return await TokenController.findTokensByUser(user) || [];
+        } catch (error) {
+            console.error('Error finding tokens for user:', error);
+            return [];
+        }
     }
 
     // Method to delete a token by its ID
     static async deleteTokenById(id: number): Promise<void> {
-        await TokenRepository.deleteTokenById(id);
+        try {
+            const result = await TokenController.deleteTokenById(id);
+            if (!result) {
+                console.log('Failed to delete token by ID');
+            }
+        } catch (error) {
+            console.error('Error deleting token by ID:', error);
+        }
     }
 
     // Method to delete all tokens associated with a user
     static async deleteTokensByUser(user: User): Promise<void> {
-        await TokenRepository.deleteTokensByUser(user);
+        try {
+            const result = await TokenController.deleteTokensByUser(user);
+            if (!result) {
+                console.log('Failed to delete tokens for user');
+            }
+        } catch (error) {
+            console.error('Error deleting tokens for user:', error);
+        }
     }
 
     // Method to revoke a token by its ID
     static async revokeTokenById(id: number): Promise<void> {
         try {
-            await TokenRepository.revokeToken(id);
+            await TokenController.deleteTokenById(id); // Adjust as needed if you have a specific revoke logic
         } catch (error) {
             console.error('Error revoking token:', error);
         }
     }
+    // Method to clear expired or revoked tokens
+    static async clearExpiredOrRevokedTokens(): Promise<void> {
+        try {
+            const tokens = await TokenController.findAllTokens();
+            
+            if (tokens.length === 0) {
+                console.log('No tokens found in the database to clear');
+                return;
+            }
+    
+            for (const token of tokens) {
+                if (token.status === 'revoked' || token.expiresAt < new Date()) {
+                    console.log(`Deleting token with ID ${token.id}`);
+                    await TokenController.deleteTokenById(token.id);
+                }
+            }
+            console.log('Token cleanup completed');
+        } catch (error) {
+            console.error('Error clearing tokens:', error);
+        }
+    }
+
+    // Method to start the token cleaner
+    static startTokenCleaner(): void {
+        // Run the token cleaner every hour
+        setInterval(async () => {
+            console.log('Clearing expired or revoked tokens ...');
+            await TokenUtil.clearExpiredOrRevokedTokens();
+        }, 3600000);
+    }
+    
 }

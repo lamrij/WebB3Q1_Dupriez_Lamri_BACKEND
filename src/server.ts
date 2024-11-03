@@ -7,6 +7,9 @@ import config from './configs/config';
 import router from './routes/Router';
 import { AppDataSource } from './configs/configFiles/dbConfig';
 
+import { TokenUtil } from './utilities/tokenUtil';
+import { log } from 'console';
+
 const app = express();
 const PORT = 3000; // Port to run the server on
 
@@ -68,6 +71,8 @@ async function startServer(app: express.Application) {
     try {
         await AppDataSource.initialize();
         logInfo('Database connection initialized successfully.');
+        TokenUtil.startTokenCleaner();
+        logInfo('Token cleaner service started successfully.');
         app.listen(PORT, () => {
             logInfo(`Server is running at http://localhost:${PORT}`);
         });
