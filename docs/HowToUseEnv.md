@@ -30,21 +30,26 @@ Fill in the necessary values for each environment file:
 
 **Example for `.env.dev`**:
 ```env
-TYPEORM_CONNECTION=sqlite
-TMDB_API_TOKEN=your_dev_tmdb_token
-JWT_SECRET=your_dev_jwt_secret
+TYPEORM_CONNECTION=sqlite  # Specifies the type of database connection (e.g., sqlite, mariadb)
+TYPEORM_DATABASE=./dev.sqlite  # Path to the SQLite database file for development
+TMDB_API_TOKEN=your_dev_tmdb_token  # API token for accessing TMDB services
+JWT_SECRET=your_dev_jwt_secret  # Secret key for signing JWTs in development
+FRONTEND_PATH=../testFile  # Path to the frontend build directory for development
+FRONTEND_CONNECTED=false  # Indicates whether the frontend is connected (true or false)
 ```
 
 **Example for `.env.prod`**:
 ```env
-TYPEORM_CONNECTION=mariadb
-TYPEORM_HOST=your_mariadb_host
-TYPEORM_PORT=3306
-TYPEORM_USERNAME=your_mariadb_username
-TYPEORM_PASSWORD=your_mariadb_password
-TYPEORM_DATABASE=your_mariadb_database
-TMDB_API_TOKEN=your_prod_tmdb_token
-JWT_SECRET=your_prod_jwt_secret
+TYPEORM_CONNECTION=mariadb  # Specifies the type of database connection (e.g., sqlite, mariadb)
+TYPEORM_HOST=your_mariadb_host  # Host address of the MariaDB database for production
+TYPEORM_PORT=your_mariadb_port  # Port number for connecting to the MariaDB database
+TYPEORM_USERNAME=your_mariadb_username  # Username for the MariaDB database connection
+TYPEORM_PASSWORD=your_mariadb_password  # Password for the MariaDB database connection
+TYPEORM_DATABASE=your_mariadb_database  # Name of the MariaDB database
+TMDB_API_TOKEN=your_prod_tmdb_token  # API token for accessing TMDB services in production
+JWT_SECRET=your_prod_jwt_secret  # Secret key for signing JWTs in production
+FRONTEND_PATH=./path/to/frontend  # Path to the frontend build directory for production
+FRONTEND_CONNECTED=false  # Indicates whether the frontend is connected (true or false)
 ```
 
 ### Step 3: Set the Environment Mode
@@ -57,6 +62,18 @@ NODE_ENV=DEV  # or PROD
 - The application automatically loads and validates the environment variables using the `Config` class during startup.
 - If any required variables are missing, an error message will be displayed, and the server will stop running to prevent misconfiguration.
 
+## Environment Variable Definitions
+- **TYPEORM_CONNECTION**: Specifies the type of database connection (e.g., `sqlite`, `mariadb`).
+- **TYPEORM_DATABASE**: Path to the database file (in development) or database name (in production).
+- **TYPEORM_HOST**: Host address of the database (used in production).
+- **TYPEORM_PORT**: Port number for the database connection (used in production).
+- **TYPEORM_USERNAME**: Username for connecting to the database (used in production).
+- **TYPEORM_PASSWORD**: Password for the database connection (used in production).
+- **TMDB_API_TOKEN**: API token for accessing The Movie Database (TMDB) services.
+- **JWT_SECRET**: Secret key for signing and verifying JSON Web Tokens (JWT).
+- **FRONTEND_PATH**: Path to the directory where the frontend build files are stored.
+- **FRONTEND_CONNECTED**: Boolean indicating whether a frontend is connected to the backend.
+
 ## Important Notes
 - **Keep your environment files private**: Ensure `.env`, `.env.dev`, and `.env.prod` are listed in your `.gitignore` file to avoid exposing sensitive data in your repository.
 - **Manual setup required**: Since the `.env` files are not committed to the repository, remember to manually copy and set up these files when setting up the project on a new machine or environment.
@@ -64,7 +81,6 @@ NODE_ENV=DEV  # or PROD
 ## Troubleshooting
 - **Environment not loading**: Double-check that the paths to your `.env` files are correct and that the `NODE_ENV` variable is set properly.
 - **Missing variables**: If the server logs indicate missing variables, verify that your `.env` files contain all required keys.
-
 
 ## Example Workflow
 1. Copy the content of `.env.dev.template` to create your `.env.dev`.
