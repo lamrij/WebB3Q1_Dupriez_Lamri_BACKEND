@@ -1,10 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import path from 'path';
 
 import config from './configs/config';
 import router from './routes/Router';
-import { AppDataSource } from './configs/dbConfig';
+import { AppDataSource } from './configs/configFiles/dbConfig';
 
 const app = express();
 const PORT = 3000; // Port to run the server on
@@ -21,8 +22,20 @@ if (!configValidation.isValid) {
     console.log('Proceeding to database initialization.');
 }
 
+// Serve static files from the frontend directory if the frontend is connected
+if (config.isFrontendConnected) {
+    const frontendPath = path.resolve(__dirname, config.frontendPath);
+    app.use(express.static(path.resolve(__dirname, config.frontendPath)));
+    console.log(`Serving frontend from ${frontendPath}`);
+
+    // Handle client-side routing for Single Page Applications (SPAs)
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(frontendPath, 'index.html'));
+    });
+}
+
 // Middlewares
-if (config.isProd()) {
+if (!config.isProd()) {
     app.use(cors());
 }
 app.use(express.json());

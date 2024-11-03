@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
-import { User } from '../models/userModel';
-import { Movie } from '../models/movieModel';
-import { Token } from '../models/tokenModel';
-import Config from './config'; // Import the Config class
+import { User } from '../../models/userModel';
+import { Movie } from '../../models/movieModel';
+import { Token } from '../../models/tokenModel';
+import Config from '../config'; // Import the Config class
 
 // Database source configuration based on environment
 export const AppDataSource = new DataSource({

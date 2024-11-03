@@ -1,4 +1,4 @@
-import { AppDataSource } from '../configs/dbConfig'; // Corrigez le chemin si nécessaire
+import { AppDataSource } from '../configs/configFiles/dbConfig';
 import { Movie } from '../models/movieModel'; // Assurez-vous que le modèle Movie est correctement importé
 
 export class MovieRepository {

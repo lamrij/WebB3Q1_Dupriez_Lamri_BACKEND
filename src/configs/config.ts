@@ -21,7 +21,13 @@ class Config {
   // Method to validate that essential environment variables are present
   static validateEnv(): { isValid: boolean, missingVars: string[] } {
     // List of required environment variables
-    const requiredVars = ['TMDB_API_TOKEN', 'JWT_SECRET', 'TYPEORM_CONNECTION'];
+    const requiredVars = [
+      'TMDB_API_TOKEN',
+      'JWT_SECRET',
+      'TYPEORM_CONNECTION',
+      'FRONTEND_PATH',
+      'FRONTEND_CONNECTED'
+    ];
     // Filter out variables that are missing from the environment
     const missingVars = requiredVars.filter((varName) => !process.env[varName]);
 
@@ -56,6 +62,17 @@ class Config {
       password: this.getEnvVariable('TYPEORM_PASSWORD', ''), // Default to an empty string if not specified
       database: this.getEnvVariable('TYPEORM_DATABASE', ''), // Default to an empty string if not specified
     };
+  }
+
+  // Getter to retrieve the frontend path from the environment variables
+  static get frontendPath(): string {
+    return this.getEnvVariable('FRONTEND_PATH');
+  }
+
+  // Getter to check if a frontend is connected based on the environment variable
+  static get isFrontendConnected(): boolean {
+    const value = this.getEnvVariable('FRONTEND_CONNECTED', 'false');
+    return value.toLowerCase() === 'true'; // Convert the string to a boolean
   }
 
   // Private method to retrieve an environment variable or a default value
