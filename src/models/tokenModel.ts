@@ -12,4 +12,13 @@ export class Token {
 
     @ManyToOne(() => User, (user) => user.tokens, { onDelete: 'CASCADE' })
     user!: User;
+
+    @CreateDateColumn()
+    createdAt!: Date;
+
+    @Column('datetime', { nullable: false }) // Supprimez la valeur par défaut ici
+    expiresAt!: Date;
+
+    @Column('text') // Utilise 'text' pour le type
+    status!: 'valid' | 'revoked';
 }

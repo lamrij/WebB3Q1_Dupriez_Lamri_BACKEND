@@ -6,6 +6,7 @@ import express, { Request, Response } from 'express';
 
 // paths reliated to the user and management 
 import testPath from './endPoints/testPath';
+import testAuthPath from './endPoints/testAuthPath';
 import loginPath from './endPoints/loginPath';
 import registerPath from './endPoints/registerPath';
 
@@ -17,6 +18,7 @@ const router = express.Router();
 
 // asingning the paths to the router
 router.use(testPath);
+router.use(testAuthPath);
 router.use(loginPath);
 router.use(registerPath);
 router.use(moviesPath);

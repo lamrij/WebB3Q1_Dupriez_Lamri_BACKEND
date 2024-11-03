@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-class Hasher {
+class HasherUtil {
     // Method to hash a password
     static async hash(password: string): Promise<string> {
         const salt = await bcrypt.genSalt(10);
@@ -13,4 +13,4 @@ class Hasher {
     }
 }
 
-export default Hasher;
+export default HasherUtil;

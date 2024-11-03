@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UserController } from '../controllers/userController';
 import { User } from '../models/userModel';
-import Hasher from '../utils/hasher';
+import HasherUtil from '../utilities/hasherUtil';
 
 export class RegisterService {
     // Method to register a new user
@@ -18,7 +18,7 @@ export class RegisterService {
             }
 
             // Hash the password
-            const hashedPassword: string = await Hasher.hash(userData.password);
+            const hashedPassword: string = await HasherUtil.hash(userData.password);
 
             // Create a new user object with the hashed password
             const userToAdd = new User(
