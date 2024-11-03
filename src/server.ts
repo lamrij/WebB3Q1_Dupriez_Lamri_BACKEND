@@ -10,52 +10,84 @@ import { AppDataSource } from './configs/configFiles/dbConfig';
 const app = express();
 const PORT = 3000; // Port to run the server on
 
-// Environment variable validation check
-const configValidation = config.validateEnv();
-if (!configValidation.isValid) {
-    console.error('The following environment variables are missing:', configValidation.missingVars.join(', '));
-    console.error('Please check the .env file and environment variables.');
-    console.error('Server startup aborted.');
-    process.exit(1); // Stop the server if essential variables are missing
-} else {
-    console.log('Environment variables validated successfully.');
-    console.log('Proceeding to database initialization.');
+// Initial setup
+function init() {
+    logInfo('Initializing application...');
+    validateEnvironment();
+    configureStaticFiles(app);
+    configureMiddlewares(app);
+    configureRoutes(app);
+    startServer(app);
 }
 
-// Serve static files from the frontend directory if the frontend is connected
-if (config.isFrontendConnected) {
-    const frontendPath = path.resolve(__dirname, config.frontendPath);
-    app.use(express.static(path.resolve(__dirname, config.frontendPath)));
-    console.log(`Serving frontend from ${frontendPath}`);
-
-    // Handle client-side routing for Single Page Applications (SPAs)
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(frontendPath, 'index.html'));
-    });
+// Function to validate environment variables
+function validateEnvironment() {
+    const configValidation = config.validateEnv();
+    if (configValidation.isValid) {
+        logInfo('Environment variables validation successful.');
+    } else {
+        logError(`Missing environment variables: ${configValidation.missingVars.join(', ')}`);
+        logError('Please check your .env file and environment variable configurations.');
+        process.exit(1); // Stop the server if essential variables are missing
+    }
 }
 
-// Middlewares
-if (!config.isProd()) {
-    app.use(cors());
+// Function to configure static file serving
+function configureStaticFiles(app: express.Application) {
+    if (config.isFrontendConnected) {
+        const frontendPath = path.resolve(__dirname, config.frontendPath);
+        app.use(express.static(frontendPath));
+        logInfo(`Serving frontend files from: ${frontendPath}`);
+    } else {
+        logInfo('Frontend connection not detected. Skipping static file serving.');
+    }
 }
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-// Routes
-app.use(router);
+// Function to configure middlewares
+function configureMiddlewares(app: express.Application) {
+    if (!config.isProd()) {
+        app.use(cors());
+        logInfo('CORS enabled (development mode).');
+    } else {
+        logInfo('CORS disabled (production mode).');
+    }
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(express.json());
+    logInfo('Middlewares configured successfully.');
+}
 
-// Server start and database initialization
-launchServer();
+// Function to configure routes
+function configureRoutes(app: express.Application) {
+    logInfo('Configuring routes...');
+    app.use(router);
+    logInfo('Routes configured successfully.');
+}
 
-async function launchServer() {
+// Function to start the server and initialize the database
+async function startServer(app: express.Application) {
     try {
         await AppDataSource.initialize();
-        console.log('Database initialized successfully.');
+        logInfo('Database connection initialized successfully.');
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            logInfo(`Server is running at http://localhost:${PORT}`);
         });
     } catch (error) {
-        console.error('Error initializing the database:', error);
+        logError('Failed to initialize the database connection:', error);
         process.exit(1);
     }
 }
+
+// Utility functions for uniform logging
+function logInfo(message: string) {
+    console.log(`[INFO] ${message}`);
+}
+
+function logError(message: string, error?: any) {
+    console.error(`[ERROR] ${message}`);
+    if (error) {
+        console.error(error);
+    }
+}
+
+// Run initial setup
+init();
