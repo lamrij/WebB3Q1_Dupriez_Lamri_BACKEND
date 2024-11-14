@@ -44,6 +44,10 @@ For both development and production environments, the following packages are req
      npm install sqlite3 --save
      ```
 
+Here's the updated section with a reference to the environment setup documentation:
+
+---
+
 ## ⚙️ Installation
 
 To start the project, follow the steps below:
@@ -53,10 +57,29 @@ To start the project, follow the steps below:
    npm install
    ```
 
-2. **Start the server:**
+2. **Set up the environment files:**
+
+   Make sure to set up your environment files correctly. For detailed instructions, please refer to [How to Use Environment Variables](docs/HowToUseEnv.md).
+
+   - Copy the template files to create your `.env` files:
+     ```bash
+     cp configs/.env.template configs/.env
+     cp configs/.env.dev.template configs/.env.dev
+     cp configs/.env.prod.template configs/.env.prod
+     ```
+
+   - Populate the `.env` files with the necessary values for your environment (DEV or PROD).
+
+3. **Start the server:**
    ```bash
    npm start
    ```
+
+   This will start the server based on the mode set in the `.env` file (`DEV` or `PROD`). Ensure that all required configurations, such as the TMDB API token and database connection details, are correctly set up to avoid connection errors.
+
+---
+
+This directs the user to read the detailed environment setup guide.
 
 This will start the server in production mode. Make sure that all configurations (TMDB, database) are properly set up before starting to avoid connection errors.
 
@@ -66,7 +89,7 @@ This will start the server in production mode. Make sure that all configurations
 
 - [File Structure](docs/FileSystemExplanation.md)
 - [Explanation of Error Codes](docs/ErrorCodeSystem.md)
-- [Endpoint Overview](docs/EndpointOverview.md)
+- [Endpoint Overview](docs/EndPointOverview.md)
 
 ### Additional Resources
 

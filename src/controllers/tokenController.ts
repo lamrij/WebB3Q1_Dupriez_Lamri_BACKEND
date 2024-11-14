@@ -4,16 +4,18 @@ import { User } from '../models/userModel';
 
 export class TokenController {
     // Create a new token for a user in the database
-    static async createTokenForUser(tokenData: string, user: User): Promise<Token | null> {
+    static async createTokenForUser(tokenData: string, user: User, expiresInHours: number = 3): Promise<Token | null> {
         try {
             const token = new Token();
             token.token = tokenData;
             token.user = user;
-             // Save the token to the database and return the token object
+            token.expiresAt = new Date(Date.now() + expiresInHours * 60 * 60 * 1000);
+            token.status = 'valid';
+            
             return await TokenRepository.createToken(token);
         } catch (error) {
             console.error('Error creating token:', error);
-            return null; 
+            return null;
         }
     }
 
@@ -23,7 +25,7 @@ export class TokenController {
             return await TokenRepository.findTokenById(id);
         } catch (error) {
             console.error('Error finding token by ID:', error);
-            return null; 
+            return null;
         }
     }
 
@@ -33,7 +35,7 @@ export class TokenController {
             return await TokenRepository.findTokensByUser(user);
         } catch (error) {
             console.error('Error finding tokens for user:', error);
-            return null; 
+            return null;
         }
     }
 
@@ -41,10 +43,10 @@ export class TokenController {
     static async deleteTokenById(id: number): Promise<boolean> {
         try {
             await TokenRepository.deleteTokenById(id);
-            return true; // Token deleted successfully
+            return true;
         } catch (error) {
             console.error('Error deleting token by ID:', error);
-            return false; 
+            return false;
         }
     }
 
@@ -52,10 +54,20 @@ export class TokenController {
     static async deleteTokensByUser(user: User): Promise<boolean> {
         try {
             await TokenRepository.deleteTokensByUser(user);
-            return true; // All tokens deleted successfully
+            return true;
         } catch (error) {
             console.error('Error deleting tokens for user:', error);
-            return false; 
+            return false;
+        }
+    }
+
+    // Find all tokens
+    static async findAllTokens(): Promise<Token[]> {
+        try {
+            return await TokenRepository.findAllTokens();
+        } catch (error) {
+            console.error('Erreur lors de la récupération de tous les tokens:', error);
+            return [];
         }
     }
 }

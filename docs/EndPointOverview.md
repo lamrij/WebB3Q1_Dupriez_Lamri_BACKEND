@@ -13,8 +13,8 @@ This documentation describes the various endpoints available in the API, along w
 
     ```json
     {
-      "username": "user",
-      "password": "password"
+      "email": "johndoe@example.com",
+      "password": "yourSecurePassword123"
     }
     ```
 
@@ -112,6 +112,53 @@ This documentation describes the various endpoints available in the API, along w
     ```
 
 ---
+
+### 5. Protected Test
+
+- **Method**: `POST`
+- **Path**: `/test`
+- **Description**: Protected route that tests the authentication middleware. This route requires an `Authorization` header containing a valid JWT token.
+
+- **Example Request**:
+
+    - **Headers**:
+        ```http
+        Authorization: Bearer <your_jwt_token>
+        ```
+        
+    - **Headers in json**:
+        ```json
+        {
+          "Authorization": "Bearer yourToken"
+        }
+        ```
+    
+    - **Body**:
+        ```json
+        {
+          // Optional body parameters if needed
+        }
+        ```
+
+- **Response**:
+
+    ```json
+    {
+      "success": true,
+      "status": "You reached the protected route",
+      "time": "2024-10-30T10:00:00.000Z", // Example date
+      "message": "Access granted",
+      "user": {
+        "id": "user_id",
+        "email": "user@example.com",
+        // other user details from the token payload
+      }
+    }
+    ```
+
+- **Notes**:
+  - Ensure that the `Authorization` header is formatted as `Bearer <your_jwt_token>`.
+  - The token must be valid and not expired for successful authentication.
 
 ## Notes
 

@@ -1,4 +1,4 @@
-import { AppDataSource } from '../configs/dbConfig';
+import { AppDataSource } from '../configs/configFiles/dbConfig';
 import { User } from '../models/userModel';
 
 export class UserRepository {
