@@ -3,10 +3,10 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
 
-import config from '../configs/config';
+import config from '../0.configs/config';
 import router from '../routes/Router';
-import { AppDataSource } from '../configs/configFiles/dbConfig';
-import { tokenController } from '../services/TokenController';
+import { AppDataSource } from '../0.configs/configFiles/dbConfig';
+import { tokenController } from '../4.controllers/TokenController';
 
 export class InitServer {
     private app: Application;

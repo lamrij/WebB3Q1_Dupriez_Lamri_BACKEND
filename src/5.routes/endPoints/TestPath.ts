@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { tokenController } from '../../services/TokenController';
+import { tokenController } from '../../4.controllers/TokenController';
 
 const testPath = express.Router();
 

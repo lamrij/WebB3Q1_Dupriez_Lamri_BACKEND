@@ -1,5 +1,5 @@
 import express from 'express';
-import { loginController } from '../../services/LoginController';
+import { loginController } from '../../4.controllers/LoginController';
 
 const loginPath = express.Router();
 

@@ -1,6 +1,6 @@
-import { AppDataSource } from '../configs/configFiles/dbConfig';
-import { Token } from '../models/TokenModel';
-import { User } from '../models/UserModel';
+import { AppDataSource } from '../0.configs/configFiles/dbConfig';
+import { Token } from '../1.models/TokenModel';
+import { User } from '../1.models/UserModel';
 
 class TokenRepository {
     // Method to create a new token and save it to the database

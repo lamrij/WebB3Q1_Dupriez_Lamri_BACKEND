@@ -1,5 +1,5 @@
-import { AppDataSource } from '../configs/configFiles/dbConfig';
-import { Movie } from '../models/MovieModel'; // Assurez-vous que le modèle Movie est correctement importé
+import { AppDataSource } from '../0.configs/configFiles/dbConfig';
+import { Movie } from '../1.models/MovieModel'; // Assurez-vous que le modèle Movie est correctement importé
 
 export class MovieRepository {
     private movieRepository = AppDataSource.getRepository(Movie);

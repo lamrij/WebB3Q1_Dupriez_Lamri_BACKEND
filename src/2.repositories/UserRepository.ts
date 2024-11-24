@@ -1,5 +1,5 @@
-import { AppDataSource } from '../configs/configFiles/dbConfig';
-import { User } from '../models/UserModel';
+import { AppDataSource } from '../0.configs/configFiles/dbConfig';
+import { User } from '../1.models/UserModel';
 
 class UserRepository {
     // Method to create a new user

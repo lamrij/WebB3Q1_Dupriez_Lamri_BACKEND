@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { tokenService } from '../controllers/TokenService';
-import config from '../configs/config';
-import { User } from '../models/UserModel';
-import { Token } from '../models/TokenModel';
+import { tokenService } from '../3.services/TokenService';
+import config from '../0.configs/config';
+import { User } from '../1.models/UserModel';
+import { Token } from '../1.models/TokenModel';
 
 class TokenController {
     // Secret key for signing the JWT token

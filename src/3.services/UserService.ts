@@ -1,5 +1,5 @@
-import { userRepository } from '../repositories/UserRepository';
-import { User } from '../models/UserModel';
+import { userRepository } from '../2.repositories/UserRepository';
+import { User } from '../1.models/UserModel';
 
 class UserService {
     // Create a new user

@@ -1,6 +1,6 @@
-import { tokenRepository } from '../repositories/TokenRepository';
-import { Token } from '../models/TokenModel';
-import { User } from '../models/UserModel';
+import { tokenRepository } from '../2.repositories/TokenRepository';
+import { Token } from '../1.models/TokenModel';
+import { User } from '../1.models/UserModel';
 
 class TokenService {
     // Create a new token for a user in the database

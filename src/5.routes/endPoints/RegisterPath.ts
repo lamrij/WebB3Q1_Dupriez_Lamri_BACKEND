@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerController } from '../../services/RegisterController';
+import { registerController } from '../../4.controllers/RegisterController';
 
 const registerPath = express.Router();
 

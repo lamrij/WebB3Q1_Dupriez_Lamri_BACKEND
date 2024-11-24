@@ -1,7 +1,7 @@
 import e, { Request, Response } from 'express';
-import { userService } from '../controllers/UserService';
+import { userService } from '../3.services/UserService';
 import HasherUtil from '../utilities/hasherUtil';
-import { User } from '../models/UserModel';
+import { User } from '../1.models/UserModel';
 import { tokenController } from './TokenController';
 
 class LoginController {

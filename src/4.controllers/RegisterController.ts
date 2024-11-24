@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { userService } from '../controllers/UserService';
-import { User } from '../models/UserModel';
+import { userService } from '../3.services/UserService';
+import { User } from '../1.models/UserModel';
 import HasherUtil from '../utilities/hasherUtil';
 
 class RegisterController {
