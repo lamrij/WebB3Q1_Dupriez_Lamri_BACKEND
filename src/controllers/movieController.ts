@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { MovieRepository } from '../repositories/movieRepository';
-import { Movie } from '../models/movieModel';
+import { Movie } from '../models/MovieModel';
 
 const movieRepository = new MovieRepository();
 

@@ -1,10 +1,10 @@
-import { TokenRepository } from '../repositories/tokenRepository';
-import { Token } from '../models/tokenModel';
-import { User } from '../models/userModel';
+import { tokenRepository } from '../repositories/TokenRepository';
+import { Token } from '../models/TokenModel';
+import { User } from '../models/UserModel';
 
-export class TokenController {
+class TokenService {
     // Create a new token for a user in the database
-    static async createTokenForUser(tokenData: string, user: User, expiresInHours: number = 3): Promise<Token | null> {
+    async createTokenForUser(tokenData: string, user: User, expiresInHours: number = 3): Promise<Token | null> {
         try {
             const token = new Token();
             token.token = tokenData;
@@ -12,7 +12,7 @@ export class TokenController {
             token.expiresAt = new Date(Date.now() + expiresInHours * 60 * 60 * 1000);
             token.status = 'valid';
             
-            return await TokenRepository.createToken(token);
+            return await tokenRepository.createToken(token);
         } catch (error) {
             console.error('Error creating token:', error);
             return null;
@@ -20,9 +20,9 @@ export class TokenController {
     }
 
     // Find a token by ID
-    static async findTokenById(id: number): Promise<Token | null> {
+    async findTokenById(id: number): Promise<Token | null> {
         try {
-            return await TokenRepository.findTokenById(id);
+            return await tokenRepository.findTokenById(id);
         } catch (error) {
             console.error('Error finding token by ID:', error);
             return null;
@@ -30,9 +30,9 @@ export class TokenController {
     }
 
     // Find all tokens associated with a user
-    static async findTokensByUser(user: User): Promise<Token[] | null> {
+    async findTokensByUser(user: User): Promise<Token[] | null> {
         try {
-            return await TokenRepository.findTokensByUser(user);
+            return await tokenRepository.findTokensByUser(user);
         } catch (error) {
             console.error('Error finding tokens for user:', error);
             return null;
@@ -40,9 +40,9 @@ export class TokenController {
     }
 
     // Delete a token by ID
-    static async deleteTokenById(id: number): Promise<boolean> {
+    async deleteTokenById(id: number): Promise<boolean> {
         try {
-            await TokenRepository.deleteTokenById(id);
+            await tokenRepository.deleteTokenById(id);
             return true;
         } catch (error) {
             console.error('Error deleting token by ID:', error);
@@ -51,9 +51,9 @@ export class TokenController {
     }
 
     // Delete all tokens associated with a user
-    static async deleteTokensByUser(user: User): Promise<boolean> {
+    async deleteTokensByUser(user: User): Promise<boolean> {
         try {
-            await TokenRepository.deleteTokensByUser(user);
+            await tokenRepository.deleteTokensByUser(user);
             return true;
         } catch (error) {
             console.error('Error deleting tokens for user:', error);
@@ -62,12 +62,16 @@ export class TokenController {
     }
 
     // Find all tokens
-    static async findAllTokens(): Promise<Token[]> {
+    async findAllTokens(): Promise<Token[]> {
         try {
-            return await TokenRepository.findAllTokens();
+            return await tokenRepository.findAllTokens();
         } catch (error) {
             console.error('Erreur lors de la récupération de tous les tokens:', error);
             return [];
         }
     }
 }
+
+const tokenService: TokenService = new TokenService();
+
+export { tokenService };

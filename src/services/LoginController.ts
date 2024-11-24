@@ -1,16 +1,16 @@
-import { Request, Response } from 'express';
-import { UserController } from '../controllers/userController';
+import e, { Request, Response } from 'express';
+import { userService } from '../controllers/UserService';
 import HasherUtil from '../utilities/hasherUtil';
-import { User } from '../models/userModel';
-import { TokenUtil } from '../utilities/tokenUtil';
+import { User } from '../models/UserModel';
+import { tokenController } from './TokenController';
 
-export class LoginService {
+class LoginController {
     // method to authenticate a user
-    static async authenticate(req: Request, res: Response): Promise<void> {
+    async authenticate(req: Request, res: Response): Promise<void> {
         const { email, password } = req.body;
 
         try {
-            const user: User | null = await UserController.findUserByEmail(email);
+            const user: User | null = await userService.findUserByEmail(email);
             
             // if the user does not exist, return an error
             if (!user) {
@@ -28,10 +28,10 @@ export class LoginService {
             }
 
             // if the authentication is successful, create a JWT token
-            const token = TokenUtil.generateToken({ id: user.id, email: user.email });
+            const token = tokenController.generateToken({ id: user.id, email: user.email });
 
             // save the token in the database
-            const savedToken = await TokenUtil.saveToken(token, user);
+            const savedToken = await tokenController.saveToken(token, user);
 
             // if the token could not be saved, return an error
             if (!savedToken) {
@@ -49,3 +49,7 @@ export class LoginService {
         }
     }
 }
+
+const loginController : LoginController = new LoginController();
+
+export { loginController };

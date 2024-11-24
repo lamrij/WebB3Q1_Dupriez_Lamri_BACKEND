@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { TokenUtil } from '../../utilities/tokenUtil';
+import { tokenController } from '../../services/TokenController';
 
 const testPath = express.Router();
 
@@ -15,7 +15,7 @@ testPath.get('/test', (req: Request, res: Response) => {
     });
 });
 // path to test the authentication
-testPath.post('/test', TokenUtil.authenticateToken, (req, res) => {
+testPath.post('/test', tokenController.authenticateToken, (req, res) => {
     const currentTime = new Date().toISOString(); 
     res.status(200).json({ 
         success: true, 
