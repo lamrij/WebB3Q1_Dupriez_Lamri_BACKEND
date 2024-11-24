@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 import config from '../0.configs/config';
-import router from '../routes/Router';
+import router from '../5.routes/Router';
 import { AppDataSource } from '../0.configs/configFiles/dbConfig';
 import { tokenController } from '../4.controllers/TokenController';
 
