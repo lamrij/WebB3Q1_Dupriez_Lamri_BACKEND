@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Token } from './tokenModel';
+import { Token } from './TokenModel';
 
 @Entity()
 export class User {

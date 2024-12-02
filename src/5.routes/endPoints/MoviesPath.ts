@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { MovieController } from '../../controllers/movieController'; // Assurez-vous que le chemin est correct
+import { MovieController } from '../../3.services/movieController'; // Assurez-vous que le chemin est correct
 
 const moviePath = express.Router();
 

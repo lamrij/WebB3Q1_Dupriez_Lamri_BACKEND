@@ -1,11 +1,11 @@
-import { UserRepository } from '../repositories/userRepository';
-import { User } from '../models/userModel';
+import { userRepository } from '../2.repositories/UserRepository';
+import { User } from '../1.models/UserModel';
 
-export class UserController {
+class UserService {
     // Create a new user
-    static async createUser(userData: User): Promise<User | null> {
+    async createUser(userData: User): Promise<User | null> {
         try {
-            const user = await UserRepository.createUser(userData);
+            const user = await userRepository.createUser(userData);
             return user; // Return the user object
         } catch (error) {
             console.error('Error creating user:', error);
@@ -14,9 +14,9 @@ export class UserController {
     }
 
     // Find a user by id
-    static async findUserById(id: number): Promise<User | null> {
+    async findUserById(id: number): Promise<User | null> {
         try {
-            return await UserRepository.findUserById(id);
+            return await userRepository.findUserById(id);
         } catch (error) {
             console.error('Error finding user by ID:', error);
             return null; 
@@ -24,9 +24,9 @@ export class UserController {
     }
 
     // Find a user by username
-    static async findUserByUsername(username: string): Promise<User | null> {
+    async findUserByUsername(username: string): Promise<User | null> {
         try {
-            return await UserRepository.findUserByUsername(username);
+            return await userRepository.findUserByUsername(username);
         } catch (error) {
             console.error('Error finding user by username:', error);
             return null; 
@@ -34,12 +34,16 @@ export class UserController {
     }
 
     // Find a user by email
-    static async findUserByEmail(email: string): Promise<User | null> {
+    async findUserByEmail(email: string): Promise<User | null> {
         try {
-            return await UserRepository.findUserByEmail(email);
+            return await userRepository.findUserByEmail(email);
         } catch (error) {
             console.error('Error finding user by email:', error);
             return null; 
         }
     }
 }
+
+const userService : UserService = new UserService();
+
+export { userService };
