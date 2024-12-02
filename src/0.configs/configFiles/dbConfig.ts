@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
-import { User } from '../../models/userModel';
-import { Movie } from '../../models/movieModel';
-import { Token } from '../../models/tokenModel';
+import { User } from '../../1.models/UserModel';
+import { Movie } from '../../1.models/MovieModel';
+import { Token } from '../../1.models/TokenModel';
 import Config from '../config'; // Import the Config class
 
 // Database source configuration based on environment

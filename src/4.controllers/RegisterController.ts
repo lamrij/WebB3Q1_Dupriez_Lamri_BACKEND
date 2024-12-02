@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
-import { UserController } from '../controllers/userController';
-import { User } from '../models/userModel';
+import { userService } from '../3.services/UserService';
+import { User } from '../1.models/UserModel';
 import HasherUtil from '../utilities/hasherUtil';
 
-export class RegisterService {
+class RegisterController {
     // Method to register a new user
-    static async register(req: Request, res: Response): Promise<void> {
+    async register(req: Request, res: Response): Promise<void> {
         try {
             const userData: User = req.body;
 
             // Verify if the user already exists
-            const existingUser = await UserController.findUserByEmail(userData.email);
+            const existingUser = await userService.findUserByEmail(userData.email);
             if (existingUser) {
                 // Return a 409 error if the user already exists
                 res.status(409).json({ success: false, error: 'Email already in use.' });
@@ -31,7 +31,7 @@ export class RegisterService {
             );
 
             // Save the user in the database
-            const newUser = await UserController.createUser(userToAdd);
+            const newUser = await userService.createUser(userToAdd);
             
             // verify if the user has been created
             if (newUser) {
@@ -46,3 +46,7 @@ export class RegisterService {
         }
     }
 }
+
+const registerController: RegisterController = new RegisterController();
+
+export { registerController };
