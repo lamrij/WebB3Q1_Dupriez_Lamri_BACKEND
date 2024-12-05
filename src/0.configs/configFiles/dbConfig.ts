@@ -7,7 +7,7 @@ import Config from '../config'; // Import the Config class
 // Database source configuration based on environment
 export const AppDataSource = new DataSource({
     type: Config.typeormConnection as 'sqlite' | 'mariadb', // Specify the type of connection
-    ...(Config.typeormConnection === 'sqlite'
+    ...(Config.typeormConnection === 'sqlite' 
         ? {
             database: 'database.sqlite', // SQLite database file for development
         }

@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express';
 
 // importation of all paths
 
+
 // paths reliated to the user and management 
 import testPath from './endPoints/TestPath';
 import loginPath from './endPoints/LoginPath';
@@ -11,6 +12,7 @@ import registerPath from './endPoints/RegisterPath';
 
 // movie routes
 import moviesPath from './endPoints/MoviesPath';
+import tmdbMoviePath from './endPoints/tmdbMoviesPath';
 
 // setting up the router
 const router = express.Router();
@@ -20,6 +22,7 @@ router.use(testPath);
 router.use(loginPath);
 router.use(registerPath);
 router.use(moviesPath);
+router.use(tmdbMoviePath); 
 
 
 
