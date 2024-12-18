@@ -1,8 +1,46 @@
 import { Request, Response } from 'express';
 import { movieService } from '../3.services/MovieService';
+import { MovieRepository } from '../2.repositories/movieRepository';
 import { Movie } from '../1.models/MovieModel';
+import { tmdbScraperService } from '../3.services/TMDBScraperService';
+import { logger } from '../utilities/logger';
 
 class MovieController {
+    private readonly movieRepository: MovieRepository;
+
+
+    constructor() {
+        this.movieRepository = new MovieRepository();
+
+    }
+
+    // Get all movies
+    async getMovies(req: Request, res: Response): Promise<void> {
+        try {
+            // Check if db update is needed
+            if (await tmdbScraperService.shouldUpdateDatabase()) {
+                await tmdbScraperService.scrapeMovies();
+            }
+
+            // Get page from query params or default to 1
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = 20; // Movies per page
+            const offset = (page - 1) * limit;
+
+            // Get movies from db
+            const movies = await this.movieRepository.findMoviesPaginated(offset, limit);
+
+            // This returns the page number and the movies through json
+            res.status(200).json({
+                page,
+                movies
+            });
+        } catch (error) {
+            logger.error('Error fetching movies:', error);
+            res.status(500).json({ error: 'Error fetching movies from database' });
+        }
+    }
+
     // Create a new movie
     async createMovie(req: Request, res: Response): Promise<void> {
         try {
@@ -55,6 +93,4 @@ class MovieController {
     }
 }
 
-const movieController: MovieController = new MovieController();
-
-export { movieController };
+export const movieController = new MovieController();

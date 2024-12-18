@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity('movies') 
+@Entity('movies')
 export class Movie {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -9,31 +9,31 @@ export class Movie {
     @Column({ default: false })
     adult: boolean;
 
-    @Column()
-    backdrop_path: string;
+    @Column('text', { nullable: true })  // Changé en text
+    backdrop_path: string | null;
 
     @Column('simple-array')
     genre_ids: number[];
 
-    @Column()
+    @Column('text')
     original_language: string;
 
-    @Column()
+    @Column('text')
     original_title: string;
 
     @Column('text')
     overview: string;
 
-    @Column('float') 
+    @Column('float')
     popularity: number;
 
-    @Column()
-    poster_path: string;
+    @Column('text', { nullable: true })  // Changé en text
+    poster_path: string | null;
 
-    @Column()
+    @Column('text')
     release_date: string;
 
-    @Column()
+    @Column('text')
     title: string;
 
     @Column({ default: false })
@@ -42,22 +42,24 @@ export class Movie {
     @Column('float')
     vote_average: number;
 
-    @Column()
+    @Column('integer')  // Précisé le type
     vote_count: number;
-    
-    constructor(adult: boolean, 
-        backdrop_path: string, 
-        genre_ids: number[], 
-        original_language: string, 
-        original_title: string, 
-        overview: string, 
-        popularity: number, 
-        poster_path: string, 
-        release_date: string, 
-        title: string, 
+
+    constructor(
+        adult: boolean,
+        backdrop_path: string | null,
+        genre_ids: number[],
+        original_language: string,
+        original_title: string,
+        overview: string,
+        popularity: number,
+        poster_path: string | null,
+        release_date: string,
+        title: string,
         video: boolean,
-        vote_average: number, 
-        vote_count: number) {
+        vote_average: number,
+        vote_count: number
+    ) {
         this.adult = adult;
         this.backdrop_path = backdrop_path;
         this.genre_ids = genre_ids;

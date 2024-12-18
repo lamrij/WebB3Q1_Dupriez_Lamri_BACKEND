@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
-import { movieController } from '../../4.controllers/MovieController'; // Assurez-vous que le chemin est correct
+import { movieController } from '../../4.controllers/MovieController'; 
+import { MovieRepository } from '../../2.repositories/movieRepository';
 
 const moviePath = express.Router();
 
@@ -17,5 +18,12 @@ moviePath.get('/movies/:id', (req: Request, res: Response) => {
 moviePath.get('/movies/title/:title', (req: Request, res: Response) => {
     movieController.findMovieByTitle(req, res);
 });
+
+// Route for getting movies with pagination
+moviePath.get('/movies', (req, res) => {
+    movieController.getMovies(req, res);
+});
+
+
 
 export default moviePath;
