@@ -7,14 +7,19 @@ import config from '../0.configs/config';
 import router from '../5.routes/Router';
 import { AppDataSource } from '../0.configs/configFiles/dbConfig';
 import { tokenController } from '../4.controllers/TokenController';
+import { initializationService } from '../3.services/InitializationService';
+import { logger } from './logger';
+
 
 export class InitServer {
     private app: Application;
     private PORT: number;
 
+
     constructor(port: number = 3000) {
         this.app = express();
         this.PORT = port;
+
     }
 
     public async start() {
@@ -69,8 +74,14 @@ export class InitServer {
         try {
             await AppDataSource.initialize();
             this.logInfo('Database connection initialized successfully.');
+
+            // initialize services
+            await initializationService.initializeServices();
+
+            // start token cleaner service
             tokenController.startTokenCleaner();
             this.logInfo('Token cleaner service started successfully.');
+
             this.app.listen(this.PORT, '0.0.0.0', () => {
                 this.logInfo(`Server is running at http://localhost:${this.PORT}`);
             });
@@ -80,15 +91,13 @@ export class InitServer {
         }
     }
 
+    // delete them to work with the logger 
     // Utility methods for logging
     private logInfo(message: string) {
-        console.log(`[INFO] ${message}`);
+        logger.info(message);
     }
 
     private logError(message: string, error?: any) {
-        console.error(`[ERROR] ${message}`);
-        if (error) {
-            console.error(error);
-        }
+        logger.error(message, error);
     }
 }
