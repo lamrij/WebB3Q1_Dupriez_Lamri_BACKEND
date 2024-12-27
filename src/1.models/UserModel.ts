@@ -27,6 +27,9 @@ export class User {
 
     @OneToMany(() => Token, (token) => token.user)
     tokens!: Token[];
+
+    @Column()
+    family!: number;
     
 
     constructor(
@@ -35,7 +38,8 @@ export class User {
         username: string,
         password: string,
         email: string,
-        birthdate: Date
+        birthdate: Date,
+        family: number = -1
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -43,5 +47,6 @@ export class User {
         this.password = password;
         this.email = email;
         this.birthdate = birthdate;
+        this.family = family;
     }
 }

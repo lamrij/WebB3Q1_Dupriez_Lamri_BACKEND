@@ -42,6 +42,20 @@ class UserService {
             return null; 
         }
     }
+
+    async setUserFamily(id: number, family: number): Promise<void> {
+        await userRepository.setUserFamily(id, family);
+    }
+
+    async getUsersInFamily(familyId: number): Promise<User[] | null> {
+        try {
+            return await userRepository.getUsersInFamily(familyId);
+        } catch (error) {
+            console.error('Error fetching users in family:', error);
+            return null;
+        }
+    }
+
 }
 
 const userService : UserService = new UserService();

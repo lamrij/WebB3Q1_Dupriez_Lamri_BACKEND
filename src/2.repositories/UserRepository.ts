@@ -27,6 +27,15 @@ class UserRepository {
             where: { email }
         });
     }
+    async setUserFamily(id: number, family: number): Promise<void> {
+        await AppDataSource.getRepository(User).update(id, { family });
+    }
+
+    async getUsersInFamily(familyId: number): Promise<User[] | null> {
+        return AppDataSource.getRepository(User).find({
+            where: { family: familyId }
+        });
+    }
 }
 
 const userRepository : UserRepository = new UserRepository();
