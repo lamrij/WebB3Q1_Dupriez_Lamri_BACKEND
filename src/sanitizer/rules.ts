@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 // importer les fonctions de règles 
 import { LoginRules } from './rules/loginRule';
 import { RegistrationRules } from './rules/registerRule';
-import { LikeRules } from './rules/LikesRules';
+import { LikeRules } from './rules/LikesRule';
 
 class ValidationRules {
     // Récupère la règle de validation pour le login (email et password)

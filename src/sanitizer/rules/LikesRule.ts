@@ -2,11 +2,6 @@ import { body } from "express-validator";
 
 export function LikeRules() {
     return [
-        // Validation de l'ID de l'utilisateur (doit être un entier positif)
-        body("user_id")
-            .isInt({ min: 1 })
-            .withMessage("User ID must be a positive integer."),
-
         // Validation de l'ID du film (doit être un entier positif)
         body("movie_id")
             .isInt({ min: 1 })
