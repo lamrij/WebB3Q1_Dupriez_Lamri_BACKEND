@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { User } from '../../1.models/UserModel';
 import { Movie } from '../../1.models/MovieModel';
 import { Token } from '../../1.models/TokenModel';
+import { Like } from '../../1.models/LikeModel';
 import Config from '../config'; // Import the Config class
 import path from 'path';
 
@@ -25,6 +26,6 @@ export const AppDataSource = new DataSource({
     ),
     //synchronize: !Config.isProd(), // Synchronize schema in non-production environments
     synchronize: true, // Synchronize schema in non-production environments
-    entities: [User, Movie, Token], // List of entities
-    logging: true // added to see the sql requests (temporary)
+    entities: [User, Movie, Token,Like], // List of entities
+    logging: false // added to see the sql requests (temporary)
 });

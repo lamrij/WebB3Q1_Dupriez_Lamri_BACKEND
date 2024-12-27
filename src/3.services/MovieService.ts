@@ -1,4 +1,4 @@
-import { MovieRepository } from '../2.repositories/movieRepository';
+import { MovieRepository } from '../2.repositories/MovieRepository';
 import { Movie } from '../1.models/MovieModel';
 
 const movieRepository = new MovieRepository();

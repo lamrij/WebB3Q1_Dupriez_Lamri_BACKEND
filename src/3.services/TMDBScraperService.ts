@@ -1,6 +1,6 @@
 import TMDBConfig from "../0.configs/configFiles/tmdbConfig";
 import { Movie } from "../1.models/MovieModel";
-import { MovieRepository } from "../2.repositories/movieRepository";
+import { MovieRepository } from "../2.repositories/MovieRepository";
 import { logger } from '../utilities/logger';
 
 class TMDBScraperService {
@@ -102,3 +102,4 @@ class TMDBScraperService {
 
 const tmdbScraperService: TMDBScraperService = new TMDBScraperService();
 export { tmdbScraperService };
+
