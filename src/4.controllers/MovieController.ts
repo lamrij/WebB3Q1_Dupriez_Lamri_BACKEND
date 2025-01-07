@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { movieService } from '../3.services/MovieService';
 import { MovieRepository } from '../2.repositories/MovieRepository';
 import { Movie } from '../1.models/MovieModel';
-import { tmdbScraperService } from '../3.services/TMDBScraperService';
 import { logger } from '../utilities/logger';
 
 class MovieController {
@@ -13,33 +12,15 @@ class MovieController {
         this.movieRepository = new MovieRepository();
 
     }
-
-    // Get all movies
     async getMovies(req: Request, res: Response): Promise<void> {
         try {
-            // Check if db update is needed
-            if (await tmdbScraperService.shouldUpdateDatabase()) {
-                await tmdbScraperService.scrapeMovies();
-            }
-
-            // Get page from query params or default to 1
-            const page = parseInt(req.query.page as string) || 1;
-            const limit = 20; // Movies per page
-            const offset = (page - 1) * limit;
-
-            // Get movies from db
-            const movies = await this.movieRepository.findMoviesPaginated(offset, limit);
-
-            // This returns the page number and the movies through json
-            res.status(200).json({
-                page,
-                movies
-            });
+            //logique de récupération
         } catch (error) {
-            logger.error('Error fetching movies:', error);
-            res.status(500).json({ error: 'Error fetching movies from database' });
+            console.error('Error in getMovie:', error);
+            res.status(500).json({ error: 'Error retrieving movie' });
         }
     }
+    
 
     // Create a new movie
     async createMovie(req: Request, res: Response): Promise<void> {
@@ -61,7 +42,7 @@ class MovieController {
     // Find a movie by ID
     async findMovieById(req: Request, res: Response): Promise<void> {
         try {
-            const id = Number(req.params.id);
+            const id = Number(req.body);
             const movie = await movieService.findMovieById(id);
 
             if (movie) {
@@ -78,7 +59,7 @@ class MovieController {
     // Find a movie by title
     async findMovieByTitle(req: Request, res: Response): Promise<void> {
         try {
-            const title = req.params.title;
+            const title = req.body;
             const movie = await movieService.findMovieByTitle(title);
 
             if (movie) {

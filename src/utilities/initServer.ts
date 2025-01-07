@@ -3,23 +3,19 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
 
-import config from '../0.configs/config';
+import config from '../0.configs/Config';
 import router from '../5.routes/Router';
-import { AppDataSource } from '../0.configs/configFiles/dbConfig';
-import { tokenController } from '../4.controllers/TokenController';
-import { initializationService } from '../3.services/InitializationService';
+import { AppDataSource } from '../0.configs/configFiles/DbConfig';
 import { logger } from './logger';
-
+import { daemonManager } from '../Daemons/Daemons';
 
 export class InitServer {
     private app: Application;
     private PORT: number;
 
-
     constructor(port: number = 3000) {
         this.app = express();
         this.PORT = port;
-
     }
 
     public async start() {
@@ -74,14 +70,8 @@ export class InitServer {
         try {
             await AppDataSource.initialize();
             this.logInfo('Database connection initialized successfully.');
-
-            // initialize services
-            await initializationService.initializeServices();
-
-            // start token cleaner service
-            tokenController.startTokenCleaner();
-            this.logInfo('Token cleaner service started successfully.');
-
+            // start the daemons
+            daemonManager.startDaemons();
             this.app.listen(this.PORT, '0.0.0.0', () => {
                 this.logInfo(`Server is running at http://localhost:${this.PORT}`);
             });

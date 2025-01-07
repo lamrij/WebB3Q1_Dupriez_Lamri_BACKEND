@@ -1,8 +1,8 @@
 import express from 'express';
 import { familyController } from '../../4.controllers/FamilyController';
 import { tokenController } from '../../4.controllers/TokenController';
-import { validateAndSanitize } from '../../sanitizer/sanitizer';
-import { validationRules } from '../../sanitizer/rules';
+import { validateAndSanitize } from '../../utilities/sanitizer/sanitizer';
+import { validationRules } from '../../utilities/sanitizer/rules';
 
 const familyPath = express.Router();
 

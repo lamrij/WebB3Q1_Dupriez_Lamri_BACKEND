@@ -12,10 +12,14 @@ import registerPath from './endPoints/RegisterPath';
 
 // movie routes
 import moviesPath from './endPoints/MoviesPath';
-import tmdbMoviePath from './endPoints/tmdbMoviesPath';
 
 // like routes
 import likePath from './endPoints/LikePath';
+
+// provider routes
+import providerPath from './endPoints/ProviderPath';
+
+import viewPath from './endPoints/ViewPath';
 
 // family routes
 import familyPath from './endPoints/FamilyPath';
@@ -28,8 +32,9 @@ router.use(testPath);
 router.use(loginPath);
 router.use(registerPath);
 router.use(moviesPath);
-router.use(tmdbMoviePath);
 router.use(likePath);
+router.use(providerPath);
+router.use(viewPath);
 router.use(familyPath);
 
 export default router;
