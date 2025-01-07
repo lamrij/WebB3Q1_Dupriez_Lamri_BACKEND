@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { tokenService } from '../3.services/TokenService';
-import config from '../0.configs/config';
+import config from '../0.configs/Config';
 import { User } from '../1.models/UserModel';
 import { Token } from '../1.models/TokenModel';
 

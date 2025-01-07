@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import { movieController } from '../../4.controllers/MovieController'; 
-import { MovieRepository } from '../../2.repositories/movieRepository';
 
 const moviePath = express.Router();
 
