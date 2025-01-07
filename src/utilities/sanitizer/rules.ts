@@ -4,6 +4,8 @@ import { body } from 'express-validator';
 import { LoginRules } from './rules/loginRule';
 import { RegistrationRules } from './rules/registerRule';
 import { LikeRules } from './rules/LikesRule';
+import { ProviderRules } from './rules/ProviderRule';
+import { ViewRules } from './rules/ViewRules';
 
 class ValidationRules {
     // Récupère la règle de validation pour le login (email et password)
@@ -19,7 +21,14 @@ class ValidationRules {
     validateLike() {
         return LikeRules();
     }
-    
+
+    validateProvider() {
+        return ProviderRules();
+    }
+
+    validateView() {
+        return ViewRules();
+    }
 }
 
 const validationRules = new ValidationRules();

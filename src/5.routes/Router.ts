@@ -16,6 +16,11 @@ import moviesPath from './endPoints/MoviesPath';
 // like routes
 import likePath from './endPoints/LikePath';
 
+// provider routes
+import providerPath from './endPoints/ProviderPath';
+
+import viewPath from './endPoints/ViewPath';
+
 // setting up the router
 const router = express.Router();
 
@@ -25,6 +30,7 @@ router.use(loginPath);
 router.use(registerPath);
 router.use(moviesPath);
 router.use(likePath);
-
+router.use(providerPath);
+router.use(viewPath);
 
 export default router;

@@ -20,7 +20,7 @@ async function scrapePopularMovies() {
             for (const tmdbMovie of movieData.results) {
                 // Vérifier si le film existe déjà via le service
                 const existingMovie = await movieService.findMovieByTitle(tmdbMovie.title);
-
+                    
                 if (!existingMovie) {
                     const movie = new Movie(
                         tmdbMovie.adult,
