@@ -1,4 +1,4 @@
-import { AppDataSource } from '../0.configs/configFiles/dbConfig';
+import { AppDataSource } from '../0.configs/configFiles/DbConfig';
 import { Like } from '../1.models/LikeModel';
 
 class LikeRepository {

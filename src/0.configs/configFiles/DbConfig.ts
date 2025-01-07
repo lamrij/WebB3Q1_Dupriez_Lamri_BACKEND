@@ -3,7 +3,7 @@ import { User } from '../../1.models/UserModel';
 import { Movie } from '../../1.models/MovieModel';
 import { Token } from '../../1.models/TokenModel';
 import { Like } from '../../1.models/LikeModel';
-import Config from '../config'; // Import the Config class
+import Config from '../Config'; // Import the Config class
 import path from 'path';
 
 const dbPath = path.join(__dirname, '..', '..', '..', 'dev.sqlite');

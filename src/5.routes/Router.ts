@@ -12,7 +12,6 @@ import registerPath from './endPoints/RegisterPath';
 
 // movie routes
 import moviesPath from './endPoints/MoviesPath';
-import tmdbMoviePath from './endPoints/tmdbMoviesPath';
 
 // like routes
 import likePath from './endPoints/LikePath';
@@ -25,7 +24,6 @@ router.use(testPath);
 router.use(loginPath);
 router.use(registerPath);
 router.use(moviesPath);
-router.use(tmdbMoviePath); 
 router.use(likePath);
 
 
