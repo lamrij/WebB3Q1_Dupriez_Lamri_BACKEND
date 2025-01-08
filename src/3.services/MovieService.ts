@@ -33,6 +33,16 @@ class MovieService {
             return null;
         }
     }
+
+    // find paginated movies
+    async findMoviesPaginated(offset: number, getNumber: number): Promise<Movie[] | null> {
+        try {
+            return await movieRepository.findMoviesPaginated(offset, getNumber);
+        } catch (error) {
+            console.error('Error finding paginated movies:', error);
+            return null;
+        }
+    }
 }
 
 const movieService: MovieService = new MovieService();

@@ -72,6 +72,23 @@ class MovieController {
             res.status(500).json({ error: 'Error finding movie' });
         }
     }
+
+    async findMoviesPaginated(req: Request, res: Response): Promise<void> {
+        try {
+            const offset = Number(req.body);
+            const getNumber = Number(req.body);
+            const movies = await movieService.findMoviesPaginated(offset, getNumber);
+
+            if (movies) {
+                res.status(200).json(movies);
+            } else {
+                res.status(404).json({ error: 'Movies not found' });
+            }
+        } catch (error) {
+            console.error('Error in findMoviesPaginated:', error);
+            res.status(500).json({ error: 'Error finding movies' });
+        }
+    }
 }
 
 export const movieController = new MovieController();

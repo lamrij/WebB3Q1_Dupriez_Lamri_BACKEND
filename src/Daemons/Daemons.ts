@@ -13,10 +13,12 @@ class DaemonManager {
             const daemonPath = path.join(__dirname, 'Daemons', file);
 
             // Lancer chaque démon dans un sous-processus
-            const daemonProcess = spawn('ts-node', [daemonPath], {
-                detached: false, // Reste lié au processus parent
-                stdio: 'inherit', // Hérite des entrées/sorties
+            const daemonProcess = spawn('npx', ['ts-node', daemonPath], {
+                detached: false,
+                stdio: 'inherit',
+                shell: true, // Important pour Windows
             });
+            
 
             this.daemons.set(file, daemonProcess);
             logger.info(`Démon "${file}" démarré. PID: ${daemonProcess.pid}`);

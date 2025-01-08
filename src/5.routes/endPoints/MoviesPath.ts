@@ -20,7 +20,7 @@ moviePath.get('/movies/title/:title', (req: Request, res: Response) => {
 
 // Route for getting movies with pagination
 moviePath.get('/movies', (req, res) => {
-    movieController.getMovies(req, res);
+    movieController.findMoviesPaginated(req, res);
 });
 
 
