@@ -28,7 +28,7 @@ class TMDBConfig {
             return response.data;
         } catch (error) {
             console.error('Erreur lors de la récupération des films actuellement en salle :', error);
-            throw error;
+            throw new Error('Unable to fetch now playing movies.');
         }
     }
 
@@ -44,7 +44,7 @@ class TMDBConfig {
             return response.data;
         } catch (error) {
             console.error('Erreur lors de la récupération des films populaires :', error);
-            throw error;
+            throw new Error('Unable to fetch popular movies.');
         }
     }
 
@@ -59,7 +59,18 @@ class TMDBConfig {
             return response.data;
         } catch (error) {
             console.error(`Erreur lors de la récupération des détails du film (ID : ${movieId}) :`, error);
-            throw error;
+            throw new Error(`Unable to fetch movie details for ID: ${movieId}`);
+        }
+    }
+
+    // Méthode pour récupérer les providers pour un film spécifique
+    async getMovieProviders(movieId: number): Promise<any> {
+        try {
+            const response = await this.axiosInstance.get(`/movie/${movieId}/watch/providers`);
+            return response.data.results;
+        } catch (error) {
+            console.error(`Erreur lors de la récupération des providers pour le film (ID : ${movieId}) :`, error);
+            throw new Error(`Unable to fetch movie providers for ID: ${movieId}`);
         }
     }
 }

@@ -32,16 +32,6 @@ class ProviderService {
         }
     }
 
-    // Obtenir tous les fournisseurs associés à un film
-    async getProvidersByMovieId(movieId: number): Promise<Provider[] | null> {
-        try {
-            return await providerRepository.findProvidersByMovieId(movieId);
-        } catch (error) {
-            console.error('Error fetching providers for movie:', error);
-            return null;
-        }
-    }
-
     // Supprimer un fournisseur par ID
     async deleteProviderById(id: number): Promise<boolean> {
         try {
@@ -61,6 +51,26 @@ class ProviderService {
         } catch (error) {
             console.error('Error deleting providers for movie:', error);
             return false;
+        }
+    }
+
+
+    // Obtenir tous les fournisseurs associés à un film
+    async getProvidersByMovieId(movieId: number): Promise<Provider[] | null> {
+        try {
+            return await providerRepository.findProvidersByMovieId(movieId);
+        } catch (error) {
+            console.error('Error fetching providers for movie:', error);
+            return null;
+        }
+    }
+    // Obtenir tous les fournisseurs uniques dans la base de données
+    async getAllUniqueProviders(): Promise<Provider[] | null> {
+        try {
+            return await providerRepository.findUniqueProviders();
+        } catch (error) {
+            console.error('Error fetching all unique providers:', error);
+            return null;
         }
     }
 }

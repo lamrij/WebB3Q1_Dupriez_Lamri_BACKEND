@@ -68,6 +68,20 @@ class ProviderController {
         }
     }
 
+    async getAllUniqueProviders(req: Request, res: Response): Promise<void> {
+        try {
+            const providers = await providerService.getAllUniqueProviders();
+            if (providers && providers.length > 0) {
+                res.status(200).json({ success: true, data: providers });
+            } else {
+                res.status(404).json({ success: false, error: 'No providers found' });
+            }
+        } catch (error) {
+            console.error('Error fetching all unique providers:', error);
+            res.status(500).json({ success: false, error: 'Internal server error' });
+        }
+    }
+
     // Supprimer un fournisseur par ID
     async deleteProviderById(req: Request, res: Response): Promise<void> {
         const { id } = req.body;

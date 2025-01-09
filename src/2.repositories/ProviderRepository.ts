@@ -37,6 +37,45 @@ class ProviderRepository {
     async deleteProvidersByMovieId(movieId: number): Promise<void> {
         await AppDataSource.getRepository(Provider).delete({ movieId });
     }
+    // Méthode pour récupérer tous les fournisseurs uniques par leur nom
+    async findUniqueProviders(): Promise<Provider[]> {
+        const queryBuilder = AppDataSource.getRepository(Provider).createQueryBuilder('provider');
+
+        // Utilisation de DISTINCT pour éliminer les doublons basés sur le nom du fournisseur
+        const uniqueProviders = await queryBuilder
+            .select('DISTINCT provider.provider', 'provider_name')
+            .addSelect('provider.id', 'id')
+            .addSelect('provider.movieId', 'movieId')
+            .getRawMany();
+
+        // Mapper les résultats pour correspondre au modèle Provider
+        return uniqueProviders.map((result) => {
+            const provider = new Provider(result.movieId, result.provider_name);
+            provider.id = result.id;
+            return provider;
+        });
+    }
+    // Méthode pour récupérer tous les fournisseurs uniques pour un certain film
+    async findUniqueProvidersByMovieId(movieId: number): Promise<Provider[]> {
+        const queryBuilder = AppDataSource.getRepository(Provider).createQueryBuilder('provider');
+
+        // Utilisation de DISTINCT pour éliminer les doublons sur le nom du provider
+        const uniqueProviders = await queryBuilder
+            .select('DISTINCT provider.provider', 'provider_name')
+            .addSelect('provider.id', 'id')
+            .addSelect('provider.movieId', 'movieId')
+            .where('provider.movieId = :movieId', { movieId })
+            .getRawMany();
+
+        // Mapper les résultats pour correspondre au modèle Provider
+        return uniqueProviders.map((result) => {
+            const provider = new Provider(result.movieId, result.provider_name);
+            provider.id = result.id;
+            return provider;
+        });
+    }
+
+
 }
 
 const providerRepository: ProviderRepository = new ProviderRepository();
