@@ -4,6 +4,8 @@ import { MovieRepository } from '../2.repositories/MovieRepository';
 import { Movie } from '../1.models/MovieModel';
 import { likeService } from '../3.services/LikeService';
 import { userService } from '../3.services/UserService';
+import { familyService } from '../3.services/FamilyService';
+import { providerService } from '../3.services/ProviderService';
 import { logger } from '../utilities/logger';
 
 class MovieController {
@@ -104,7 +106,6 @@ class MovieController {
         try {
             // Étape 1 : Récupérer les utilisateurs de la famille
             const users = await userService.getUsersInFamily(Number(familyId));
-    
             if (!users || users.length === 0) {
                 res.status(404).json({ error: 'No users found in this family' });
                 return;
@@ -114,7 +115,7 @@ class MovieController {
             const allLikes = [];
             for (const user of users) {
                 const userLikes = await likeService.getOnlyLikesByUser(user.id); // Méthode pour récupérer les likes d'un utilisateur
-                if (userLikes) allLikes.push(...userLikes); // Ajouter les likes de cet utilisateur à la liste globale
+                if (userLikes) allLikes.push(...userLikes);
             }
     
             if (allLikes.length === 0) {
@@ -122,26 +123,47 @@ class MovieController {
                 return;
             }
     
-            // Étape 3 : Récupérer les films associés en appelant `findMovieById` pour chaque like
+            // Étape 3 : Récupérer les providers de la famille
+            const family = await familyService.findFamilyById(Number(familyId));
+            if (!family || !family.providers || family.providers.length === 0) {
+                res.status(404).json({ error: 'No providers found for the family' });
+                return;
+            }
+            const familyProviders = family.providers;
+    
+            // Étape 4 : Récupérer les films associés en filtrant par les providers de la famille
             const movies = [];
             for (const like of allLikes) {
                 const movie = await movieService.findMovieById(like.movie_id); // Rechercher chaque film par ID
                 if (movie) {
-                    movies.push(movie); // Ajouter le film trouvé à la liste des films
+                    // Récupérer les providers du film
+                    const movieProviders = await providerService.getProvidersByMovieId(movie.id);
+                    if (!movieProviders || movieProviders.length === 0) continue;
+                    const movieProviderNames = movieProviders.map((provider) => provider.provider);
+    
+                    // Vérifier si au moins un provider du film est dans la liste des providers de la famille
+                    const hasMatchingProvider = movieProviderNames.some((providerName) =>
+                        familyProviders.includes(providerName)
+                    );
+    
+                    if (hasMatchingProvider) {
+                        movies.push(movie); // Ajouter le film uniquement s'il a un provider correspondant
+                    }
                 }
             }
-
+    
             // Envoyer la réponse
             if (movies.length > 0) {
                 res.status(200).json({ movies: movies });
             } else {
-                res.status(404).json({ error: 'Movies not found' });
+                res.status(404).json({ error: 'Movies not found matching family providers' });
             }
         } catch (error) {
             console.error('Error in GetMovieLikeByAllFamilyMembers:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     }
+    
     
     
     
