@@ -16,7 +16,7 @@ class TokenRepository {
     }
 
     // Method to find a token by its string value
-    async findTokenByTokenString(tokenString: string): Promise<Token | null> {
+    async findTokenByToken(tokenString: string): Promise<Token | null> {
         return AppDataSource.getRepository(Token).findOne({
             where: { token: tokenString },
             relations: ['user'], // Include user if necessary

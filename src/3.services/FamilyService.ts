@@ -3,18 +3,17 @@ import { Family } from '../1.models/FamilyModel';
 
 class FamilyService {
     // Créer une nouvelle famille
-    async createFamily(nom: string): Promise<Family | null> {
+    async createFamily(nom: string, providers: string[] = []): Promise<Family | null> {
         try {
             // Vérifier si une famille avec ce nom existe déjà
             const existingFamily = await familyRepository.findFamilyByName(nom);
             if (existingFamily) {
-                // Si une famille existe déjà avec ce nom, retourner null
                 console.log('Family with this name already exists.');
                 return null;
             }
 
-            // Créer une nouvelle famille si elle n'existe pas
-            const newFamily = new Family(nom);
+            // Créer une nouvelle famille
+            const newFamily = new Family(nom, providers);
             return await familyRepository.createFamily(newFamily);
         } catch (error) {
             console.error('Error creating family:', error);
@@ -60,6 +59,46 @@ class FamilyService {
         } catch (error) {
             console.error('Error deleting family by ID:', error);
             return false;
+        }
+    }
+
+    // Ajouter un provider à une famille
+    async addProviderToFamily(id: number, provider: string): Promise<Family | null> {
+        try {
+            return await familyRepository.addProviderToFamily(id, provider);
+        } catch (error) {
+            console.error('Error adding provider to family:', error);
+            return null;
+        }
+    }
+
+    // Supprimer un provider d'une famille
+    async removeProviderFromFamily(id: number, provider: string): Promise<Family | null> {
+        try {
+            return await familyRepository.removeProviderFromFamily(id, provider);
+        } catch (error) {
+            console.error('Error removing provider from family:', error);
+            return null;
+        }
+    }
+
+    // Mettre à jour le booléen likeToRewatch pour une famille
+    async updateLikeToRewatch(id: number, likeToRewatch: boolean): Promise<Family | null> {
+        try {
+            return await familyRepository.updateLikeToRewatch(id, likeToRewatch);
+        } catch (error) {
+            console.error('Error updating likeToRewatch for family:', error);
+            return null;
+        }
+    }
+
+    // Mettre à jour une famille
+    async updateFamily(id: number, updatedFields: Partial<Family>): Promise<Family | null> {
+        try {
+            return await familyRepository.updateFamily(id, updatedFields);
+        } catch (error) {
+            console.error('Error updating family:', error);
+            return null;
         }
     }
 }

@@ -26,16 +26,6 @@ familyPath.post(
     }
 );
 
-// Route pour récupérer une famille par nom
-familyPath.post(
-    '/families/get-by-name',
-    tokenController.authenticateToken, // Vérification du token
-    validateAndSanitize(validationRules.validateFamily()), // Validation du nom
-    (req, res) => {
-        familyController.getFamilyByName(req, res);
-    }
-);
-
 // Route pour obtenir toutes les familles
 familyPath.get(
     '/families/all',
@@ -72,6 +62,37 @@ familyPath.post(
     validateAndSanitize(validationRules.validateFamily()), // Validation de l'ID de la famille
     (req, res) => {
         familyController.getUsersInFamily(req, res);
+    }
+);
+
+// Route pour ajouter un provider à une famille
+familyPath.post(
+    '/families/add-provider',
+    tokenController.authenticateToken, // Vérification du token
+    validateAndSanitize(validationRules.validateFamily()), // Validation de l'ID de la famille et du provider
+    (req, res) => {
+        familyController.addProviderToFamily(req, res);
+    }
+);
+
+// Route pour supprimer un provider d'une famille
+familyPath.post(
+    '/families/remove-provider',
+    tokenController.authenticateToken, // Vérification du token
+    validateAndSanitize(validationRules.validateFamily()), // Validation de l'ID de la famille et du provider
+    (req, res) => {
+        familyController.removeProviderFromFamily(req, res);
+    }
+);
+
+// Route pour mettre à jour le booléen likeToRewatch
+familyPath.post(
+    '/families/update-like-to-rewatch',
+    tokenController.authenticateToken, // Vérification du token
+    validateAndSanitize(validationRules.validateFamily()), // Validation de l'ID de la famille et de likeToRewatch
+    (req, res) => {
+        familyController.updateLikeToRewatch(req, res);
+        console.log('familyPath');
     }
 );
 

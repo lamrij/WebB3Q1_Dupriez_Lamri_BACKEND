@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { movieService } from '../3.services/MovieService';
 import { MovieRepository } from '../2.repositories/MovieRepository';
 import { Movie } from '../1.models/MovieModel';
+import { likeService } from '../3.services/LikeService';
+import { userService } from '../3.services/UserService';
 import { logger } from '../utilities/logger';
 
 class MovieController {
@@ -90,6 +92,58 @@ class MovieController {
             res.status(500).json({ error: 'Error finding movies' });
         }
     }
+
+    async GetMovieLikeByAllFamilyMembers(req: Request, res: Response): Promise<void> {
+        const { familyId } = req.body;
+    
+        if (!familyId) {
+            res.status(400).json({ error: 'Family ID is required in the request body' });
+            return;
+        }
+    
+        try {
+            // Étape 1 : Récupérer les utilisateurs de la famille
+            const users = await userService.getUsersInFamily(Number(familyId));
+    
+            if (!users || users.length === 0) {
+                res.status(404).json({ error: 'No users found in this family' });
+                return;
+            }
+    
+            // Étape 2 : Récupérer tous les likes pour chaque utilisateur
+            const allLikes = [];
+            for (const user of users) {
+                const userLikes = await likeService.getOnlyLikesByUser(user.id); // Méthode pour récupérer les likes d'un utilisateur
+                if (userLikes) allLikes.push(...userLikes); // Ajouter les likes de cet utilisateur à la liste globale
+            }
+    
+            if (allLikes.length === 0) {
+                res.status(404).json({ error: 'No likes found for the family' });
+                return;
+            }
+    
+            // Étape 3 : Récupérer les films associés en appelant `findMovieById` pour chaque like
+            const movies = [];
+            for (const like of allLikes) {
+                const movie = await movieService.findMovieById(like.movie_id); // Rechercher chaque film par ID
+                if (movie) {
+                    movies.push(movie); // Ajouter le film trouvé à la liste des films
+                }
+            }
+
+            // Envoyer la réponse
+            if (movies.length > 0) {
+                res.status(200).json({ movies: movies });
+            } else {
+                res.status(404).json({ error: 'Movies not found' });
+            }
+        } catch (error) {
+            console.error('Error in GetMovieLikeByAllFamilyMembers:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    
+    
     
 }
 

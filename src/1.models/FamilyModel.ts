@@ -9,7 +9,14 @@ export class Family {
     @Column('varchar', { length: 255 })
     nom!: string; // Nom de la famille
 
-    constructor(nom: string) {
+    @Column('boolean', { default: false })
+    likeToRewatch!: boolean; // Indique si la famille aime revoir les films
+
+    @Column('simple-array')
+    providers!: string[]; // Liste des noms de providers associés à la famille
+
+    constructor(nom: string, providers: string[] = []) {
         this.nom = nom;
+        this.providers = providers;
     }
 }

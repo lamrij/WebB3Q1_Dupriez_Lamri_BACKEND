@@ -4,15 +4,16 @@ import { likeService } from '../3.services/LikeService';
 class LikeController {
     // Créer un like ou un dislike
     async createLike(req: Request, res: Response): Promise<void> {
-        const { user_id, movie_id, is_like } = req.body;
-
-        if (!user_id || !movie_id || is_like === undefined) {
+        const { userId, movieId, like } = req.body;
+        console.log('likeController');
+        console.log(req.body);
+        if (!userId || !movieId || like === undefined) {
             res.status(400).json({ success: false, error: 'Invalid input data' });
             return;
         }
 
         try {
-            const newLike = await likeService.createLike(user_id, movie_id, is_like);
+            const newLike = await likeService.createLike(userId, movieId, like);
             if (newLike) {
                 res.status(201).json({ success: true, data: newLike });
             } else {

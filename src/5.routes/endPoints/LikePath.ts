@@ -14,6 +14,7 @@ likePath.post(
     validateAndSanitize(validationRules.validateLike()), // Validation et nettoyage des données
     (req, res) => {
         likeController.createLike(req, res);
+        console.log('likePath');
     }
 );
 

@@ -70,6 +70,15 @@ class TokenService {
             return [];
         }
     }
+
+    async findTokenByToken(token: string): Promise<Token | null> {
+        try {
+            return await tokenRepository.findTokenByToken(token);
+        } catch (error) {
+            console.error('Error finding token by token:', error);
+            return null;
+        }
+    }
 }
 
 const tokenService: TokenService = new TokenService();

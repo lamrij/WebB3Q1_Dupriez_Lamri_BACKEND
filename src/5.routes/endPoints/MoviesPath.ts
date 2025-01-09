@@ -22,6 +22,11 @@ moviePath.get('/movies/title/:title', (req: Request, res: Response) => {
 moviePath.get('/movies', (req, res) => {
     movieController.findMoviesPaginated(req, res);
 });
+// Route pour obtenir les films likés par tous les membres d'une famille
+moviePath.post('/movies/family-likes', (req: Request, res: Response) => {
+    movieController.GetMovieLikeByAllFamilyMembers(req, res);
+    console.log('moviePath');
+});
 
 
 

@@ -37,45 +37,35 @@ class ProviderRepository {
     async deleteProvidersByMovieId(movieId: number): Promise<void> {
         await AppDataSource.getRepository(Provider).delete({ movieId });
     }
+
     // Méthode pour récupérer tous les fournisseurs uniques par leur nom
-    async findUniqueProviders(): Promise<Provider[]> {
+    async findUniqueProviders(): Promise<{ provider_name: string }[]> {
         const queryBuilder = AppDataSource.getRepository(Provider).createQueryBuilder('provider');
 
-        // Utilisation de DISTINCT pour éliminer les doublons basés sur le nom du fournisseur
         const uniqueProviders = await queryBuilder
-            .select('DISTINCT provider.provider', 'provider_name')
-            .addSelect('provider.id', 'id')
-            .addSelect('provider.movieId', 'movieId')
+            .select('DISTINCT provider.provider', 'provider_name') // Récupère uniquement les noms distincts
             .getRawMany();
 
-        // Mapper les résultats pour correspondre au modèle Provider
-        return uniqueProviders.map((result) => {
-            const provider = new Provider(result.movieId, result.provider_name);
-            provider.id = result.id;
-            return provider;
-        });
+        // Retourne simplement les noms des providers
+        return uniqueProviders.map((result) => ({
+            provider_name: result.provider_name,
+        }));
     }
+
     // Méthode pour récupérer tous les fournisseurs uniques pour un certain film
-    async findUniqueProvidersByMovieId(movieId: number): Promise<Provider[]> {
+    async findUniqueProvidersByMovieId(movieId: number): Promise<{ provider_name: string }[]> {
         const queryBuilder = AppDataSource.getRepository(Provider).createQueryBuilder('provider');
 
-        // Utilisation de DISTINCT pour éliminer les doublons sur le nom du provider
         const uniqueProviders = await queryBuilder
-            .select('DISTINCT provider.provider', 'provider_name')
-            .addSelect('provider.id', 'id')
-            .addSelect('provider.movieId', 'movieId')
+            .select('DISTINCT provider.provider', 'provider_name') // Récupère uniquement les noms distincts
             .where('provider.movieId = :movieId', { movieId })
             .getRawMany();
 
-        // Mapper les résultats pour correspondre au modèle Provider
-        return uniqueProviders.map((result) => {
-            const provider = new Provider(result.movieId, result.provider_name);
-            provider.id = result.id;
-            return provider;
-        });
+        // Retourne simplement les noms des providers
+        return uniqueProviders.map((result) => ({
+            provider_name: result.provider_name,
+        }));
     }
-
-
 }
 
 const providerRepository: ProviderRepository = new ProviderRepository();

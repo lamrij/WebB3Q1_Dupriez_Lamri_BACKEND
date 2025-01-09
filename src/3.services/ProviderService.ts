@@ -65,14 +65,18 @@ class ProviderService {
         }
     }
     // Obtenir tous les fournisseurs uniques dans la base de données
-    async getAllUniqueProviders(): Promise<Provider[] | null> {
-        try {
-            return await providerRepository.findUniqueProviders();
-        } catch (error) {
-            console.error('Error fetching all unique providers:', error);
-            return null;
-        }
+async getAllUniqueProviders(): Promise<string[] | null> {
+    try {
+        // Récupère les fournisseurs sous forme d'objets
+        const providers = await providerRepository.findUniqueProviders();
+
+        // Mappe les objets pour retourner uniquement les noms des providers
+        return providers.map((provider) => provider.provider_name);
+    } catch (error) {
+        console.error('Error fetching all unique providers:', error);
+        return null;
     }
+}
 }
 
 const providerService: ProviderService = new ProviderService();

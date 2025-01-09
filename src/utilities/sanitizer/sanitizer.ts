@@ -53,6 +53,7 @@ export const validateAndSanitize = (rules: ValidationChain[]) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 res.status(400).json({ errors: errors.array() });
+                return;
             }
 
             next(); // Tout est valide et nettoyé, passe au middleware suivant

@@ -33,7 +33,6 @@ export class MovieRepository {
             },
         });
     }
-    
 }
 
 // choosing to use findMoviesPaginated instead of findAllMovies or find movies by title :

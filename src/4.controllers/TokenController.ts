@@ -19,28 +19,20 @@ class TokenController {
         }
     }
 
-    // Method to verify a JWT token
-    verifyToken(token: string): any {
+    // Méthode fléchée pour garantir le bon contexte
+    verifyToken = (token: string): any => {
         try {
             return jwt.verify(token, this.secretKey);
         } catch (error) {
-            if (error instanceof jwt.JsonWebTokenError) {
-                console.error('JWT Error:', error.message);
-            } else if (error instanceof jwt.TokenExpiredError) {
-                console.error('Token expired:', error.message);
-            } else if (error instanceof jwt.NotBeforeError) {
-                console.error('Token not active yet:', error.message);
-            } else {
-                console.error('Unknown error during token verification:', error);
-            }
-            throw new Error('Invalid or expired token');
+            console.error('Error verifying token:', error);
+            throw error;
         }
-    }
+    };
 
-    // Middleware to authenticate a token
-    async authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
+    // Méthode fléchée pour le middleware
+    authenticateToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const authHeader = req.headers['authorization'];
-        const tokenString = authHeader && authHeader.split(' ')[1]; // Expected format: "Bearer <token>"
+        const tokenString = authHeader?.split(' ')[1];
 
         if (!tokenString) {
             console.log('No token found in the request header');
@@ -49,41 +41,35 @@ class TokenController {
         }
 
         try {
-            // Call the verifyToken method using TokenUtil
             const decoded = this.verifyToken(tokenString);
 
-            // Retrieve the token from the database through the controller
-            const tokenRecord = await tokenService.findTokenById(decoded.id);
-            if (!tokenRecord || tokenRecord.token !== tokenString) {
-                console.log('Token not found or mismatched in the database');
+            // Vérifiez si le token existe dans la base de données
+            const tokenRecord = await tokenService.findTokenByToken(tokenString);
+            if (!tokenRecord) {
+                console.log('Token not found in the database');
                 res.status(401).json({ success: false, error: 'Token not found or revoked' });
                 return;
             }
 
-            // Check the token status
             if (tokenRecord.status !== 'valid') {
                 console.log('Token has been revoked');
                 res.status(401).json({ success: false, error: 'Token has been revoked' });
                 return;
             }
 
-            // Check if the token has expired
-            if (tokenRecord.expiresAt < new Date()) {
+            if (new Date(tokenRecord.expiresAt) < new Date()) {
                 console.log('Token has expired');
                 res.status(401).json({ success: false, error: 'Token has expired' });
                 return;
             }
 
-            // Attach the decoded token data to the request
-            (req as any).user = decoded;
-
-            // Proceed to the next middleware
             next();
         } catch (error) {
             console.error('Token authentication failed:', error);
             res.status(403).json({ success: false, error: 'Invalid or expired token' });
         }
-    }
+    };
+    
 
     // Method to save a token in the database
     async saveToken(token: string, user: User, expiresInHours: number = 3): Promise<Token | null> {
@@ -167,15 +153,6 @@ class TokenController {
         } catch (error) {
             console.error('Error clearing tokens:', error);
         }
-    }
-
-    // Method to start the token cleaner
-    startTokenCleaner(): void {
-        // Run the token cleaner every hour
-        setInterval(async () => {
-            console.log('Clearing expired or revoked tokens ...');
-            await this.clearExpiredOrRevokedTokens();
-        }, 3600000);
     }
     
 }
