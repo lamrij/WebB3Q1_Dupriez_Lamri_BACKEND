@@ -142,7 +142,6 @@ class ViewController {
             res.status(400).json({ success: false, error: 'Movie ID is required in the request body' });
             return;
         }
-
         try {
             const success = await viewService.deleteViewsByMovieId(Number(movieId));
             if (success) {

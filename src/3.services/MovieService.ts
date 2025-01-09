@@ -35,9 +35,9 @@ class MovieService {
     }
 
     // find paginated movies
-    async findMoviesPaginated(offset: number, getNumber: number): Promise<Movie[] | null> {
+    async findMoviesPaginated(skip: number, take: number): Promise<Movie[] | null> {
         try {
-            return await movieRepository.findMoviesPaginated(offset, getNumber);
+            return await movieRepository.findMoviesPaginated(skip, take);
         } catch (error) {
             console.error('Error finding paginated movies:', error);
             return null;

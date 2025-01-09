@@ -26,13 +26,14 @@ export class MovieRepository {
     // find movies with pagination 
     async findMoviesPaginated(skip: number, take: number): Promise<Movie[]> {
         return await this.movieRepository.find({
-            skip,
-            take,
+            skip: skip, // Nombre de films à ignorer
+            take: take, // Nombre de films à récupérer
             order: {
-                popularity: 'DESC' // Order by popularity in descending order
-            }
+                popularity: 'DESC', // Trier par popularité de manière décroissante
+            },
         });
     }
+    
 }
 
 // choosing to use findMoviesPaginated instead of findAllMovies or find movies by title :

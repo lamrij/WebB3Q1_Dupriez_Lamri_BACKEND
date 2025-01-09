@@ -41,7 +41,7 @@ class LoginController {
             }
 
             // return the token to the client
-            res.status(200).json({ success: true, token });
+            res.status(200).json({ success: true, token, user: { id: user.id, email: user.email } });
 
         } catch (error) {
             console.error('Authentication error: error code LS2:', error);
